@@ -1,0 +1,35 @@
+<?
+$insert_atencion = '
+         UPDATE atenciones_temp
+         SET fecha          = "'.$_fecha.'",
+		     telefono       = "'.$_telefono.'",
+			 plan           = "'.$_plan.'",
+             horallam       ="'.$_horallam.'",,
+			 socio = "'.$_socio.'",
+             nombre = "'.$_nombre.'",
+			 tiposocio = "'.$_tiposocio.'",
+             edad = "'.$_edad.'",
+			 sexo = "'.$_sexo.'",
+             identificacion = "'.$_identificacion.'",
+			 documento = "'.$_documento.'",
+             calle = "'.$_calle.'",
+			 numero = "'.$_numero.'",
+             piso = "'.$_piso.'",
+			 depto = "'.$_depto.'",
+			 casa = "'.$_casa.'",
+             monoblok = "'.$_monoblok.'",
+			 barrio = "'.$_barrio.'",
+             entre1 = "'.$_entre1.'",
+			 entre2 ="'.$_entre2.'",
+             localidad = "'.$_localidad.'",
+			 referencia = "'.$_referencia.'",
+             zona = "'.$_zona.'",
+			 motivo1 ='.$moti_explode[0].',
+             motivo2 = '.$moti_explode[1].',
+             color = '.$_color.',
+			 observa1 ="'.$_observa1.'",
+             observa2 ="'.$_observa2.'",
+			 operec ="'.$_opedesp.'"
+         ';
+
+?>

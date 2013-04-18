@@ -1,0 +1,24 @@
+/** General Style Info **/
+body {
+	background: #B1B1B1;
+	color: #000;
+	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
+	margin: 5px;
+}
+
+.datos_receptor {
+	font-size:15px;
+}
+
+.filtros {
+	font-size:15px;
+}
+
+.datos_socio {
+	width:100%;	
+}
+
+td {
+	background: #EBE8EE;
+	font-size:12px;
+}
