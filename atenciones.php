@@ -708,7 +708,10 @@ $html_salida = '
 
 <title>Alta de Emergencias</title>
    '.$xajax->printJavascript("xajax/").'
+
 <link href="css/sem.css" type="text/css" rel="stylesheet">
+<link href="css/estilos.css" rel="stylesheet" type="text/css" />
+
 </head>
 <style type="text/css">
 <!--
@@ -716,7 +719,7 @@ $html_salida = '
 -->
 </style>
 <script defer type="text/javascript" src="jsfunciones.js"></script>
-<link href="estilos.css" rel="stylesheet" type="text/css" />
+
 <script>
 function load_cierre()
  {
