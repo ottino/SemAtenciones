@@ -1,39 +1,26 @@
 <?php
-######################INCLUDES################################
-//archivo de configuracion
+
 include_once ('config.php');
-
-//funciones propias
 include ('funciones.php');
-
-//inclu�mos la clase ajax
 require ('xajax/xajax.inc.php');
-
-//login del usuario
 require_once ('cookie.php');
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// VARIABLES GLOBALES - DATOS DE USUARIO LOGON
+// Datos del usuario
 $cookie = new cookieClass;
 $G_usuario = $cookie->get("usuario");
 $G_legajo  = $cookie->get("legajo");
 $G_perfil  = $cookie->get("perfil");
 $G_funcion = $cookie->get("funcion");
-
-################### Control de usuarios##########################
-
-$segmenu = valida_menu();
-if ($segmenu <> "OK")
-  { mensaje_error ('Principal.php', 'Usuario no autorizado');
-   exit;
-  }
  
+// Conexion con la base
+conectar_db ($bd_host , $bd_database , $bd_user , $bd_pass);
 
-################### Conexion a la base de datos##########################
-$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-mysql_select_db($bd_database, $bd);
+$filas_nosocio = null;
+$parametros_js = null;
+$html_salida = null;
+$disabled = null;
+$html_salida = null; 
 
-######################DEF FUNCIONES XAJAX########################
 
 # VECTOR QUE TIENE LAS FILAS HTML DE LOS NO APADRONADOS
 for ($c=1 ; $c<4 ; $c++)
@@ -85,6 +72,9 @@ $xajax->setCharEncoding("iso-8859-1");
 
 function func_lista_planes ($id_plan)
 {
+       $band = null;
+       $html_salida = null;
+       
        $consulta_planes = mysql_query("SELECT * FROM convenios;");
 
        // Cuando se carga la pagina se carga el combo de planes
@@ -171,6 +161,7 @@ function func_input_planes ($id_plan)
 function func_datos_padron ($id_plan , $dato , $filtro)
 {
  global $td_color;
+ $disabled = null;
 
  $envia_convenio = 0;
  switch ($filtro) {
@@ -460,7 +451,9 @@ $id_plan=$envia_convenio;
 function func_datos_domicilio ($id_plan , $dato , $filtro)
 {
  global $td_color , $path_imagenes_ruta, $fontdef;
-
+ $padron_fetch =null;
+ $img=null;
+ 
  switch ($filtro) {
     case 1:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
@@ -591,7 +584,8 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
 function fun_alerta_zona ($id_zona)
 {
   global $path_imagenes_ruta;
-
+  $html_salida = null; 
+  
   $consulta_zona = mysql_query("SELECT * FROM zonas WHERE idzonas = ".$id_zona);
   $fuera_zona=mysql_fetch_array($consulta_zona);
 
@@ -622,7 +616,7 @@ function func_lista_motivos ($idmotivo)
  while ($fila=mysql_fetch_array($consulta_motivos))
  {
   if (($fila['idmotivo'] == $ids['0']) && ($fila['idmotivo2'] == $ids['1']))
-    $html_salida.= '<option selected="selected" value="'.$fila['idmotivo'].''.$fila['idotivo2'].'" >'.$fila['desc'].'</option>';
+    $html_salida.= '<option selected="selected" value="'.$fila['idmotivo'].''.$fila['idmotivo2'].'" >'.$fila['desc'].'</option>';
   else
     $html_salida.= '<option value="'.$fila['idmotivo'].''.$fila['idmotivo2'].'" >'.$fila['desc'].'</option>';
  }
@@ -671,6 +665,7 @@ function busca_motivos($idmotivo)
 function lista_color($idcolor)
 {
  global $path_imagenes_ruta;
+ $foquito = null;
  //$ids = explode ("-",$idcolor);
  $ids ['0'] = substr($idcolor, 0, 1);
  //$ids ['1'] = substr($idmotivo, 1, 2);
@@ -989,7 +984,7 @@ function agrega_emergencia_ctraslado (
    //tenemos que devolver la instanciaci�n del objeto xajaxResponse
    return $respuesta;
 }
-//REGISTERRRRRRR
+
 $xajax->registerFunction("func_lista_planes");
 $xajax->registerFunction("func_input_planes");
 $xajax->registerFunction("func_datos_padron");
@@ -1001,7 +996,6 @@ $xajax->registerFunction("lista_color");
 $xajax->registerFunction("agrega_emergencia");
 $xajax->registerFunction("agrega_emergencia_ctraslado");
 
-//PETICIONNNNNN
 $xajax->processRequests();
 //<link href="estilos.css" rel="stylesheet" type="text/css" />
 
@@ -1011,7 +1005,7 @@ $xajax->processRequests();
 $html_salida = '
 <html>
 <head>
-<script defer type="text/javascript" src="jsfunciones.js"></script>
+<script defer type="text/javascript" src="js/jsfunciones.js"></script>
 <script language="JavaScript">
 
 function mueveReloj(){

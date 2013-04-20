@@ -704,6 +704,7 @@ if (($idemergencia_temp <> null))
 
 }
 
+
 $html_salida = '
 <html>
  <head>
