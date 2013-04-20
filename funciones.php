@@ -211,10 +211,10 @@ if ($G_usuario == null)
    $html_salida = 'Error -----  Usuario no conectado';
 else
  $html_salida = '
- <table height="79" border="0" align="">
+ <table height="50" border="0" align="">
   <tr>
-    <td scope="col" width="15%"> <img  src="'.$imagen.'" width="120" height="73"  align="top" /></td>
-    <td scope="col" width="65%"><h1>'.$titulo.'</h1></td>
+    <td scope="col" width="10%"> <img  src="'.$imagen.'" width="110" height="40"  align="top" /></td>
+    <td scope="col" width="75%"><h3>'.$titulo.'</h3></td>
     <td scope="col" width="25%">
     <div id="infoUsuario">
         <b>Usuario: </b>'.$G_legajo.' <br />

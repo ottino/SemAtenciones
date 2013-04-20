@@ -13,9 +13,7 @@ $G_legajo  = $cookie->get("legajo");
 $G_perfil  = $cookie->get("perfil");
 $G_funcion = $cookie->get("funcion");
 
-//$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-//mysql_select_db($bd_database, $bd);
-
+// Conexion con la base
 conectar_db ($bd_host , $bd_database , $bd_user , $bd_pass);
 
 // recupero datos de la emergencia
@@ -591,11 +589,9 @@ $xajax->registerFunction("control_reclamo_1");
 $xajax->registerFunction("control_reclamo_2");
 $xajax->registerFunction("control_reclamo_3");
 //$xajax->registerFunction("text_pasedespacho");
-//El objeto xajax tiene que procesar cualquier petici�n
+//El objeto xajax tiene que procesar cualquier peticion
 $xajax->processRequests();
 
-
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $atencion_datos = null;
 $zona = null;
 $plan = null;
@@ -802,7 +798,7 @@ function mueveReloj(){
 </script>
 </head>
 <body onload="func_onload();" >
-'.titulo_encabezado_solo('Despacho - Alta de Emergencias',$path_imagen_logo).'
+'.titulo_encabezado_solo('Despacho',$path_imagen_logo).'
 <table border="1">
 <td colspan=9><a href="mod_alta.php" target="_blank"> ALTA EMERGENCIA</a></td>
 </table>
