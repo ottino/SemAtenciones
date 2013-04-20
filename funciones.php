@@ -6,9 +6,22 @@ function conexion (){
    $dbd= mysql_connect('localhost','root','');
    if (!$dbd)
       {
-        die('Error de coneccion: ' . mysql_error());
+        die('Error: ' . mysql_error());
       }
    return $dbd;
+}
+
+function conectar_db ($host , $db , $usr , $pass){
+    
+   $dbd= mysql_connect($host, $usr, $pass);
+   
+   if (!$dbd)
+      {
+        die('Error al conectar con la base de datos : ' . mysql_error());
+      }
+      
+   mysql_select_db($db, $dbd);
+   
 }
 
 function sel_db ($db)
@@ -82,7 +95,7 @@ else
        <OPTION VALUE= "C1_Atenciones.php">Consulta Unitaria</OPTION>
        <OPTION VALUE= "L_Prestaciones0.php">Resumen Atenciones</OPTION>
        <OPTION VALUE= "ABM_Atenciones.php">Listado Atenciones</OPTION>
-       <OPTION VALUE= "L_Estadisticas.php">Estadísticas</OPTION>
+       <OPTION VALUE= "L_Estadisticas.php">Estadï¿½sticas</OPTION>
        <OPTION VALUE= "L_Estachofer.php">Estad. x Chofer</OPTION>
        <OPTION>-----------------</OPTION>
        <OPTION VALUE= "AR_Atencionespend.php">Pendientes PDF</OPTION>
@@ -120,10 +133,10 @@ else
        <OPTION VALUE= "ABM_Movdisp.php">Guardias Activas</OPTION>
        <OPTION VALUE= "C_Movdisp.php">Guardias Cerradas</OPTION>
        <OPTION>-----------------</OPTION>
-       <OPTION VALUE= "ABM_Liqguardia0.php">Liquidación Guardias</OPTION>
-       <OPTION VALUE= "ABM_LiqguardiaMes.php">Liquidación Mensual</OPTION>
+       <OPTION VALUE= "ABM_Liqguardia0.php">Liquidaciï¿½n Guardias</OPTION>
+       <OPTION VALUE= "ABM_LiqguardiaMes.php">Liquidaciï¿½n Mensual</OPTION>
        <OPTION VALUE= "EXP_LiqguardiaMes.php">Liq Mensual Excel</OPTION>
-       <OPTION VALUE= "ABM_Datosliq.php">Parámetros Liquidación</OPTION>
+       <OPTION VALUE= "ABM_Datosliq.php">Parï¿½metros Liquidaciï¿½n</OPTION>
        <OPTION>-----------------</OPTION>
        <OPTION VALUE= "A_Guardias.php">Carga Guardias</OPTION>
        <OPTION VALUE= "ABM_Guardias.php">Consulta Guardias</OPTION>
@@ -142,7 +155,7 @@ else
     </td>
     <td >
     <SELECT onclick="this.style.width = auto;" onblur="this.style.width = 130px;" style="width:130px; background-color:'.$se_color.';"  NAME="Atenciones" onchange="window.location.href=this.options[this.selectedIndex].value" style="background-color:'.$se_color.'" style="border:none">
-       <OPTION VALUE= "Facturación.php" selected="selected">Facturación</OPTION>
+       <OPTION VALUE= "Facturaciï¿½n.php" selected="selected">Facturaciï¿½n</OPTION>
        <OPTION VALUE= "ABM_Facturas.php">Cons Facturas</OPTION>
        <OPTION VALUE= "A_Comprobantes.php">Genera Cuotas</OPTION>
        <OPTION VALUE= "A_Archtarjetas.php">Genera Arch Tarj</OPTION>

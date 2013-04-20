@@ -1,41 +1,22 @@
 <?php
-//echo $_POST['id_atencion_temp'];
-//echo "aaa",$_REQUEST["love"];
-//funciones propias
+
 include ('funciones.php');
 include ('lista_rapido.php');
-
-//archivo de configuracion
 include_once ('config.php');
-
-//incluímos la clase ajax
 require ('xajax/xajax.inc.php');
-
-//login usuario
 require_once ('cookie.php');
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// VARIABLES GLOBALES - DATOS DE USUARIO LOGON
+// Datos del usuario
 $cookie = new cookieClass;
 $G_usuario = $cookie->get("usuario");
 $G_legajo  = $cookie->get("legajo");
 $G_perfil  = $cookie->get("perfil");
 $G_funcion = $cookie->get("funcion");
 
+//$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
+//mysql_select_db($bd_database, $bd);
 
-################### Control de usuarios##########################
-/*
-$segmenu = valida_menu();
-if ($segmenu <> "OK")
-  { mensaje_error ('Principal.php', 'Usuario no autorizado');
-   exit;
-  }
-*/
-
-//*  CONEXION A LA BASEDE DATOS
-$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-mysql_select_db($bd_database, $bd);
-//*
+conectar_db ($bd_host , $bd_database , $bd_user , $bd_pass);
 
 // recupero datos de la emergencia
 $idemergencia_temp = null;
@@ -102,7 +83,7 @@ function refresca_moviles ()
     //escribimos en la capa con id="respuesta" el texto que aparece en $salida
     $respuesta->addAssign("muestra_moviles","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 
 }
@@ -178,7 +159,7 @@ function refresca_equipo($idmovildisp){
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_equipo","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -275,7 +256,7 @@ function asigna_movil($idatencion_temp,$idmovildisp)
     $respuesta->addAssign("muestra_liberado","innerHTML",$hora_cero);
     $respuesta->addAssign("muestra_boton","innerHTML",$BOTON );
    }
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 
 }
@@ -301,7 +282,7 @@ function control_salida_base($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_salida_base","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -333,7 +314,7 @@ function control_llegada_dom($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_llegada_dom","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -378,7 +359,7 @@ function control_salida_dom($idatencion_temp)
 //   $respuesta->addAssign("muestra_boton","innerHTML",$BOTON);
 
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -432,7 +413,7 @@ function control_liberado($idatencion_temp)
    $respuesta->addAssign("muestra_boton","innerHTML",$BOTON);
 
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -464,7 +445,7 @@ function control_llegada_hosp($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_llegada_hosp","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -496,7 +477,7 @@ function control_salida_hosp($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_salida_hosp","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -534,7 +515,7 @@ function control_llegada_base($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_llegada_base","innerHTML",$salida);
    $respuesta->addAssign("muestra_hora_disp","innerHTML",$hora_aux);
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -553,7 +534,7 @@ function control_reclamo_1($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_reclamo_1","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -573,7 +554,7 @@ function control_reclamo_2($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_reclamo_2","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -593,7 +574,7 @@ function control_reclamo_3($idatencion_temp)
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("muestra_reclamo_3","innerHTML",$salida);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 $xajax->registerFunction("refresca_equipo");
@@ -610,7 +591,7 @@ $xajax->registerFunction("control_reclamo_1");
 $xajax->registerFunction("control_reclamo_2");
 $xajax->registerFunction("control_reclamo_3");
 //$xajax->registerFunction("text_pasedespacho");
-//El objeto xajax tiene que procesar cualquier petición
+//El objeto xajax tiene que procesar cualquier peticiï¿½n
 $xajax->processRequests();
 
 
@@ -851,7 +832,7 @@ function mueveReloj(){
   </tr>
   <tr>
    <td colspan="9">
-    <img src="imagenes/241.ico" width="16" height="15" />&nbsp;En Línea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
+    <img src="imagenes/241.ico" width="16" height="15" />&nbsp;En Lï¿½nea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
     PENDIENTES ('.($cantidad_traslados_pendi['CANTIDAD'] + $cantidad_eventos_pendi['CANTIDAD']).'): Traslados '.$cantidad_traslados_pendi['CANTIDAD'].'  Eventos '.$cantidad_eventos_pendi['CANTIDAD'].'
     DETALLE  <img style="CURSOR:pointer" src="imagenes/Alert 01.ico" width="16" height="16" onClick="window.open(\'popup_traslados_pendi.php\',\'ANULACIONES\', \'width=1200,height=700,scrollbars=yes\');"/>
    </td>
@@ -1076,7 +1057,7 @@ function mueveReloj(){
        <textarea type="text" name="notas" rows="20"  align="left" style="width:100%">
        '.$plan_desc.'
 
-       *********************************       Información personal del cliente.        *********************************
+       *********************************       Informaciï¿½n personal del cliente.        *********************************
 
        * Apellido y nombre    : '.elimina_caracteres(htmlentities($atencion_datos['nombre'])).'
        * Edad                 : '.$atencion_datos['edad'].'
@@ -1099,7 +1080,7 @@ function mueveReloj(){
        * Tipo de Socio        : '.$padron_datos_para_obs['tiposocio'].'
 
        ******************************************************************************************************************
-       *********************************          Información sobre horarios.           *********************************
+       *********************************          Informaciï¿½n sobre horarios.           *********************************
 
        * LLAMADOS
        * Hora llamado    : '.$atencion_datos['horallam'].'
@@ -1118,7 +1099,7 @@ function mueveReloj(){
 
 
        ******************************************************************************************************************
-       *********************************             Información sobre Plan.            *********************************
+       *********************************             Informaciï¿½n sobre Plan.            *********************************
        * Codigo Plan          : '.$atencion_datos['plan'].'
        * Descripcion del plan : '.$plan_desc_1.'
        * Datos                : '.$plan_desc.'
