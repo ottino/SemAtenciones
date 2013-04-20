@@ -6,7 +6,8 @@ function muestra_listado_temp ($idemergencia_temp_11 , $ordenar)
 
 //archivo de configuracion
 include_once ('config.php');
-
+$td_color = '';
+$body_color= '';
 //global $td_color , $font_family , $body_color;
 //global $fontdef, $fontt, $fontreg;
 

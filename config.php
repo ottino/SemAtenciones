@@ -6,11 +6,10 @@ $bd_user = 'usrdesarrollo';
 $bd_pass = 'usrdesarrollo';
 $bd_database = 'semadmin';
 
-/*
+
 $bd_host = 'localhost';
 $bd_user = 'root';
 $bd_pass = '';
-*/
 
 //$bd_database = 'gnsys2';
 

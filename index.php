@@ -1,26 +1,19 @@
 <?php
+
 session_start();
-######################INCLUDES################################
-//archivo de configuracion
+
 include_once ('config.php');
+require_once("cookie.php");
 
-//funciones propias
 include ('funciones.php');
-
-//incluímos la clase ajax
 require ('xajax/xajax.inc.php');
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//require_once("cookie.php");
 
-################### Conexion a la base de  ##########################
-    $bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-    mysql_select_db($bd_database, $bd);
+
+$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
+mysql_select_db($bd_database, $bd);
     
 if(isset($_POST['leg']) && isset($_POST['cla'])){
 
-    
-
-    //Ejecucion de la sentencia SQL
     $legajo = $_POST['leg'];
     $contrasena = $_POST['cla'];
 
@@ -30,15 +23,16 @@ if(isset($_POST['leg']) && isset($_POST['cla'])){
 
         $result=mysql_query($sSQL,$bd);
 
-        $contrasena = md5($_POST['cla'] . $semilla);
-
+        // Con la encriptacion
+        # $contrasena = md5($_POST['cla'] . $semilla);     
+         
+        $contrasena = $_POST['cla'];
 
         if ($result)
         {
           $resultado = mysql_fetch_array($result);
           
-          //if ($resultado['clave'] <> $contrasena)
-		  if (1<>1)
+          if ($resultado['clave'] <> $contrasena)
             $mensaje = 'Usuario y clave incorrectos';
            else
            {
@@ -50,11 +44,10 @@ if(isset($_POST['leg']) && isset($_POST['cla'])){
             $cookie->parametros("funcion",$resultado['funcion']);
             $cookie->parametros("nick",$resultado['nick']);
 
-            echo mensaje_ok('Principal.php',"OK");
+            echo mensaje_ok('principal.php',"OK");
 
            }
-
-           //mysql_free_result($result);
+           mysql_free_result($result);
         }
         else
             $mensaje = 'Usuario y clave incorrectos';
@@ -66,60 +59,42 @@ if(isset($_POST['leg']) && isset($_POST['cla'])){
 ?>
 
 
-
-
-<HTML>
-<HEAD>
-
-<TITLE><?php echo TITULO_SISTEMA; ?></TITLE>
-<link href="css/sem.css" type="text/css" rel="stylesheet">
-</head>
+<html>
+    <head>
+        <title>
+             <?php 
+                echo TITULO_SISTEMA; 
+            ?>
+        </title>
+    
+        <link href="css/sem.css" type="text/css" rel="stylesheet">
+    </head>
 
 <body>
 
+    <form method="POST" action="index.php">
 
-<FORM METHOD="POST" ACTION="index.php">
-
-
-<table  align="center"  width="38%" height="437" border="0">
-  <tr>
-    <td height="107">&nbsp;</td>
-  </tr>
-  <tr>
-    <td height="322"  background="imagenes/logo.jpg">
-    <table width="100%" height="201" border="0">
-        <tr>
-          <th colspan = "2">&nbsp;</th>
-          
-        </tr>
-        <tr>
-          <td>Usuario</td>
-        </tr>
-        <tr>
-          <td><input size= 10 type = "text" name = "leg" value = "" /></td>
-        </tr>
-        <tr>
-          <td>Clave</td>
-        </tr>
-        <tr>
-          <td><input  size= 10 type = "password" name = "cla" value = "" /></td>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td><?php echo empty($mensaje) ? '&nbsp;' : "<span class='error'>$mensaje</span>"; ?> </td>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td><INPUT name="SUBMIT" TYPE="submit" value="Ingresar"></td>
-        </tr>     
-      </table></td>
-  </tr>
-</table>
-</FORM>
+        <table border="0">
+            <tr>
+              <td>Usuario</td>
+            </tr>
+            <tr>
+              <td><input size= 10 type = "text" name = "leg" value = "" /></td>
+            </tr>
+            <tr>
+              <td>Clave</td>
+            </tr>
+            <tr>
+              <td><input  size= 10 type = "password" name = "cla" value = "" /></td>
+            </tr>
+            <tr>
+              <td><?php echo empty($mensaje) ? '&nbsp;' : "<span class='error'>$mensaje</span>"; ?> </td>
+            </tr>
+            <tr>
+              <td><input name="submit" type="submit" value="Ingresar"></td>
+            </tr>     
+          </table>
+    </form>
 
 </body>
 </html>
