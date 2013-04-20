@@ -19,11 +19,14 @@ conectar_db ($bd_host , $bd_database , $bd_user , $bd_pass);
 // recupero datos de la emergencia
 $idemergencia_temp = null;
 if(isset($_POST['id_atencion_temp']))
+  {
     $idemergencia_temp = ltrim($_POST['id_atencion_temp'],'0');
-
+  }
+  
 $imagen_home = "imagenes/home.jpg";
 $imagen_atiempo = "imagenes/logo.jpg";
 
+// Ordenamiento de las emergencias
 $ordenar = null;
 if(isset($_POST['id_ordenar']))
     $ordenar = $_POST['id_ordenar'];
@@ -37,22 +40,23 @@ $or_color3 = $td_color;
 $or_color4 = $td_color;
 
 if ($ordenar == '1')
-    $or_color1 = $body_color;
-  else
-  if ($ordenar == '2')
-     $or_color2 = $body_color;
-    else
-    if ($ordenar == '3')
-      $or_color3 = $body_color;
-    else
-      $or_color4 = $body_color;
+{  
+  $or_color1 = $body_color;
+} else if ($ordenar == '2')
+        {  
+           $or_color2 = $body_color;
+        } else if ($ordenar == '3')
+                {
+                    $or_color3 = $body_color;
+                } else {
+                        $or_color4 = $body_color;
+                       }
 
-######### XAJAX ##############################
 //instanciamos el objeto de la clase xajax
 $xajax = new xajax();
-// funciones para la libreria
-function refresca_moviles ()
-{
+
+// funciones para la libreria xajax
+function refresca_moviles () {
 
      global $td_color , $idemergencia_temp;
     //*
@@ -86,7 +90,7 @@ function refresca_moviles ()
 
 }
 
-function refresca_equipo($idmovildisp){
+function refresca_equipo($idmovildisp) {
 
    global $td_color;
    global $fontdef;
@@ -161,8 +165,7 @@ function refresca_equipo($idmovildisp){
    return $respuesta;
 }
 
-function asigna_movil($idatencion_temp,$idmovildisp)
-{
+function asigna_movil($idatencion_temp,$idmovildisp) {
    $hora_cero = 0;
    if ($idmovildisp == 'DESASIGNAR')
    {
@@ -259,8 +262,7 @@ function asigna_movil($idatencion_temp,$idmovildisp)
 
 }
 
-function control_salida_base($idatencion_temp)
-{
+function control_salida_base($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -284,8 +286,7 @@ function control_salida_base($idatencion_temp)
    return $respuesta;
 }
 
-function control_llegada_dom($idatencion_temp)
-{
+function control_llegada_dom($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -316,8 +317,7 @@ function control_llegada_dom($idatencion_temp)
    return $respuesta;
 }
 
-function control_salida_dom($idatencion_temp)
-{
+function control_salida_dom($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
    $mostrar_boton='F';
@@ -361,8 +361,7 @@ function control_salida_dom($idatencion_temp)
    return $respuesta;
 }
 
-function control_liberado($idatencion_temp)
-{
+function control_liberado($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
    $mostrar_boton='F';
@@ -415,9 +414,7 @@ function control_liberado($idatencion_temp)
    return $respuesta;
 }
 
-
-function control_llegada_hosp($idatencion_temp)
-{
+function control_llegada_hosp($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -447,8 +444,7 @@ function control_llegada_hosp($idatencion_temp)
    return $respuesta;
 }
 
-function control_salida_hosp($idatencion_temp)
-{
+function control_salida_hosp($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -479,8 +475,7 @@ function control_salida_hosp($idatencion_temp)
    return $respuesta;
 }
 
-function control_llegada_base($idatencion_temp)
-{
+function control_llegada_base($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -517,8 +512,7 @@ function control_llegada_base($idatencion_temp)
    return $respuesta;
 }
 
-function control_reclamo_1($idatencion_temp)
-{
+function control_reclamo_1($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -536,8 +530,7 @@ function control_reclamo_1($idatencion_temp)
    return $respuesta;
 }
 
-function control_reclamo_2($idatencion_temp)
-{
+function control_reclamo_2($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -556,8 +549,7 @@ function control_reclamo_2($idatencion_temp)
    return $respuesta;
 }
 
-function control_reclamo_3($idatencion_temp)
-{
+function control_reclamo_3($idatencion_temp) {
    $consulta_control = mysql_query("select * from atenciones_temp where id=".$idatencion_temp);
    $control = mysql_fetch_array($consulta_control);
 
@@ -575,6 +567,7 @@ function control_reclamo_3($idatencion_temp)
    //tenemos que devolver la instanciaci�n del objeto xajaxResponse
    return $respuesta;
 }
+
 $xajax->registerFunction("refresca_equipo");
 $xajax->registerFunction("asigna_movil");
 $xajax->registerFunction("refresca_moviles");
@@ -588,10 +581,11 @@ $xajax->registerFunction("control_llegada_base");
 $xajax->registerFunction("control_reclamo_1");
 $xajax->registerFunction("control_reclamo_2");
 $xajax->registerFunction("control_reclamo_3");
-//$xajax->registerFunction("text_pasedespacho");
+
 //El objeto xajax tiene que procesar cualquier peticion
 $xajax->processRequests();
 
+// Definicion de variables
 $atencion_datos = null;
 $zona = null;
 $plan = null;
@@ -608,203 +602,209 @@ $plan_desc = null;
 $padron_datos_para_obs =null;
 $plan_desc_1 = null;
 
-if (($idemergencia_temp <> null)) //and ($atencion_datos <> null))
-{
-$consulta_atencion = mysql_query("select * from atenciones_temp where id=".$idemergencia_temp);
-$atencion_datos = mysql_fetch_array($consulta_atencion);
-$consulta_zona = mysql_query ("select * from zonas where idzonas= '".$atencion_datos['zona']."'");
-$zona = mysql_fetch_array($consulta_zona);
-$consulta_plan = mysql_query ("select * from planes where idplan= '".$atencion_datos['plan']."'");
-$plan = mysql_fetch_array($consulta_plan);
-$consulta_receptor = mysql_query ("select * from legajos where legajo=".$atencion_datos['operec']);
-$receptor = mysql_fetch_array($consulta_receptor);
-$receptor_nombre= explode(",",$receptor['apeynomb']);
+if (($idemergencia_temp <> null))
+    {
+        $consulta_atencion = mysql_query("select * from atenciones_temp where id=".$idemergencia_temp);
+        $atencion_datos = mysql_fetch_array($consulta_atencion);
+        $consulta_zona = mysql_query ("select * from zonas where idzonas= '".$atencion_datos['zona']."'");
+        $zona = mysql_fetch_array($consulta_zona);
+        $consulta_plan = mysql_query ("select * from planes where idplan= '".$atencion_datos['plan']."'");
+        $plan = mysql_fetch_array($consulta_plan);
+        $consulta_receptor = mysql_query ("select * from legajos where legajo=".$atencion_datos['operec']);
+        $receptor = mysql_fetch_array($consulta_receptor);
+        $receptor_nombre= explode(",",$receptor['apeynomb']);
 
-$cons_padron_datos = mysql_query("select * from padron where idpadron='".$atencion_datos['socio']."'");
-$padron_datos_para_obs = mysql_fetch_array($cons_padron_datos );
+        $cons_padron_datos = mysql_query("select * from padron where idpadron='".$atencion_datos['socio']."'");
+        $padron_datos_para_obs = mysql_fetch_array($cons_padron_datos );
 
-if ($atencion_datos['opedesp'] != null)
- {
-  $consulta_ope_desp_nombre = mysql_query("select * from legajos where legajo=".$atencion_datos['opedesp']);
-  $opedesp_nombre = mysql_fetch_array($consulta_ope_desp_nombre);
-  $opedesp_nombre = $opedesp_nombre['apeynomb'];
- }
-else $opedesp_nombre="";
+        if ($atencion_datos['opedesp'] != null)
+            {
+             $consulta_ope_desp_nombre = mysql_query("select * from legajos where legajo=".$atencion_datos['opedesp']);
+             $opedesp_nombre = mysql_fetch_array($consulta_ope_desp_nombre);
+             $opedesp_nombre = $opedesp_nombre['apeynomb'];
+            }
+        else 
+            {   
+              $opedesp_nombre="";
+            }  
 
-if ($atencion_datos['plan'] != null)
- {
-  $consulta_plan_desc = mysql_query("select * from planes where idplan= '".$atencion_datos['plan']."'");
-  $plan_desc = mysql_fetch_array($consulta_plan_desc);
-  $plan_desc_1 = $plan_desc['descplan'];
-  $plan_desc = $plan_desc['datos'];
- }
-else $plan_desc="&nbsp;";
+        if ($atencion_datos['plan'] != null)
+         {
+          $consulta_plan_desc = mysql_query("select * from planes where idplan= '".$atencion_datos['plan']."'");
+          $plan_desc = mysql_fetch_array($consulta_plan_desc);
+          $plan_desc_1 = $plan_desc['descplan'];
+          $plan_desc = $plan_desc['datos'];
+         }
+        else {
+               $plan_desc="&nbsp;";
+             } 
 
-if ($atencion_datos['motivo1'] != null)
- {
-  $consulta_motivo_desc = mysql_query("select * from motivos where idmotivo=".$atencion_datos['motivo1']." and idmotivo2 =".$atencion_datos['motivo2']);
-  $fila_motivos = mysql_fetch_array($consulta_motivo_desc);
-  $motivo_desc = $fila_motivos['desc'];
- }
-else $motivo_desc="&nbsp;";
+        if ($atencion_datos['motivo1'] != null)
+         {
+          $consulta_motivo_desc = mysql_query("select * from motivos where idmotivo=".$atencion_datos['motivo1']." and idmotivo2 =".$atencion_datos['motivo2']);
+          $fila_motivos = mysql_fetch_array($consulta_motivo_desc);
+          $motivo_desc = $fila_motivos['desc'];
+         }
+        else {
+               $motivo_desc="&nbsp;";
+             }
 
-if ($atencion_datos['abierta'] == '1')
- $BOTON = '<form><input type="button"  value ="cerrar" width="30" height="12" onclick="this.form.submit();load_cierre();"/></form>';
-else $BOTON = '&nbsp;';
+        if ($atencion_datos['abierta'] == '1')
+         $BOTON = '<form><input type="button"  value ="cerrar" width="30" height="12" onclick="this.form.submit();load_cierre();"/></form>';
+        else $BOTON = '&nbsp;';
 
-// ESTADISTICAS DE TOTALES POR FOQUITOS
-$cons_cantidad_traslados_pendi = mysql_query ("
-                                          SELECT count(*) AS CANTIDAD
-                                          FROM atenciones_temp
-                                          WHERE (color = '4')
-                                          AND traslado_aux > now( )
-                                          AND abierta <> '2'
-                                          ORDER BY color ASC , id ASC ");
-$cantidad_traslados_pendi = mysql_fetch_array($cons_cantidad_traslados_pendi);
+        // Totales por foquitos
+        $cons_cantidad_traslados_pendi = mysql_query ("
+                                                  SELECT count(*) AS CANTIDAD
+                                                  FROM atenciones_temp
+                                                  WHERE (color = '4')
+                                                  AND traslado_aux > now( )
+                                                  AND abierta <> '2'
+                                                  ORDER BY color ASC , id ASC ");
+        
+        $cantidad_traslados_pendi = mysql_fetch_array($cons_cantidad_traslados_pendi);
 
-$cons_cantidad_eventos_pendi = mysql_query ("
-                                          SELECT count(*) AS CANTIDAD
-                                          FROM atenciones_temp
-                                          WHERE (color = '7')
-                                          AND traslado_aux > now( )
-                                          AND abierta <> '2'
-                                          ORDER BY color ASC , id ASC");
-$cantidad_eventos_pendi = mysql_fetch_array($cons_cantidad_eventos_pendi);
+        $cons_cantidad_eventos_pendi = mysql_query ("
+                                                  SELECT count(*) AS CANTIDAD
+                                                  FROM atenciones_temp
+                                                  WHERE (color = '7')
+                                                  AND traslado_aux > now( )
+                                                  AND abierta <> '2'
+                                                  ORDER BY color ASC , id ASC");
+        
+        $cantidad_eventos_pendi = mysql_fetch_array($cons_cantidad_eventos_pendi);
 
-$consulta_foquitos_est = mysql_query ("SELECT color, count( * ) AS cantidad
-                                       FROM atenciones_temp
-                                       WHERE abierta <> '2'
-                                       GROUP BY color
-                                       ORDER BY 2 desc");
+        $consulta_foquitos_est = mysql_query ("SELECT color, count( * ) AS cantidad
+                                               FROM atenciones_temp
+                                               WHERE abierta <> '2'
+                                               GROUP BY color
+                                               ORDER BY 2 desc");
 
-while ($fila=mysql_fetch_array($consulta_foquitos_est))
-{
-if ($fila['color'] == 4)
- {
-  //if ($cantidad_traslados_pendi['CANTIDAD'] < $fila['cantidad'])
-  $foquitos_est.=$fila['cantidad']-$cantidad_traslados_pendi['CANTIDAD'].'&nbsp;&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp;&nbsp;';
- }else
- if ($fila['color'] == 7)
- {
-  //if ($cantidad_traslados_pendi['CANTIDAD'] < $fila['cantidad'])
-  $foquitos_est.=$fila['cantidad']-$cantidad_eventos_pendi['CANTIDAD'].'&nbsp;&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp;&nbsp;';
- }else
- {
-   $foquitos_est.=$fila['cantidad'].'&nbsp;&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp;&nbsp;';
- }
+        while ($fila=mysql_fetch_array($consulta_foquitos_est))
+        {
+         if ($fila['color'] == 4)
+         {
+          $foquitos_est.=$fila['cantidad']-$cantidad_traslados_pendi['CANTIDAD'].'&nbsp;&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp;&nbsp;';
+         }else
+         if ($fila['color'] == 7)
+         {
+          $foquitos_est.=$fila['cantidad']-$cantidad_eventos_pendi['CANTIDAD'].'&nbsp;&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp;&nbsp;';
+         }else
+         {
+           $foquitos_est.=$fila['cantidad'].'&nbsp;&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp;&nbsp;';
+         }
+        }
+        
+        $consulta_cantidad_total_est = mysql_query ("SELECT count( * ) AS cantidad
+                                                     FROM atenciones_temp
+                                                     WHERE abierta <> '2'");
+
+        $cantidad_total_est = mysql_fetch_array($consulta_cantidad_total_est);
+
+
 }
-$consulta_cantidad_total_est = mysql_query ("SELECT count( * ) AS cantidad
-                                       FROM atenciones_temp
-                                       WHERE abierta <> '2'");
 
-$cantidad_total_est = mysql_fetch_array($consulta_cantidad_total_est);
-//----------
-
-
-}
 $html_salida = '
 <html>
-<head>
+ <head>
+    
+        '.$xajax->printJavascript("xajax/").'
 
-<title>Alta de Emergencias</title>
-   '.$xajax->printJavascript("xajax/").'
+        <link href="css/sem.css" type="text/css" rel="stylesheet">
+        <link href="css/estilos.css" rel="stylesheet" type="text/css" />
+        <script defer type="text/javascript" src="js/jsfunciones.js"></script>
+        
+        <script>
+        
+            function load_cierre()
+             {
+              window.open("cierre_atencion.php?id='.$idemergencia_temp.'");
+             }
+             
+            function load_alta()
+             {
+              window.open("mod_alta.php");
+             }
 
-<link href="css/sem.css" type="text/css" rel="stylesheet">
-<link href="css/estilos.css" rel="stylesheet" type="text/css" />
+             function func_onload() {
+               xajax_refresca_moviles();
+               xajax_refresca_equipo('.$atencion_datos['movil_2'].'-0);
+               mueveReloj();
+             }
+             
+             function getXMLHttpRequest()
+             {
+              var xmlHttp=null;
+              try
+                {
+                 // Firefox, Opera 8.0+, Safari
+                 xmlHttp=new XMLHttpRequest();
+                }
+              catch (e)
+                {
+                // Internet Explorer
+                try
+                 {
+                 xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+                 }
+                catch (e)
+                 {
+                 xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+                 }
+                }
+               return xmlHttp;
+            }
 
-</head>
-<style type="text/css">
-<!--
-.style2 {color: #0000CC}
--->
-</style>
-<script defer type="text/javascript" src="jsfunciones.js"></script>
+            var carg = \'<p align="center">Cargando...</p>\';
 
-<script>
-function load_cierre()
- {
-  window.open("cierre_atencion.php?id='.$idemergencia_temp.'");
- }
-function load_alta()
- {
-  window.open("mod_alta.php");
- }
+            function explode(nombre_div,pagina) {
+                var cont = document.getElementById(nombre_div); // aqui esta la var nombre_div
+                ajax = getXMLHttpRequest();
+                ajax.onreadystatechange = function() {
 
- function func_onload() {
-   xajax_refresca_moviles();
-   xajax_refresca_equipo('.$atencion_datos['movil_2'].'-0);
-   mueveReloj();
- }
-function getXMLHttpRequest()
-{
-var xmlHttp=null;
-try
- {
- // Firefox, Opera 8.0+, Safari
- xmlHttp=new XMLHttpRequest();
- }
-catch (e)
- {
- // Internet Explorer
- try
-  {
-  xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-  }
- catch (e)
-  {
-  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
- }
-return xmlHttp;
-}
+                    if(ajax.readyState == 4) {
+                        cont.innerHTML = ajax.responseText;
+                    }
+                }
+                //ajax.open(\'GET\', pagina, true); // aqui esta la var "pagina"
+                //ajax.open(\'GET\', pagina + "?rand=" + Math.random()*10000, true);
+                ajax.open(\'GET\', pagina + "?id_AA='.$idemergencia_temp.'&orden='.$ordenar.'&rand=" + Math.random()*10000, true);
+                ajax.send(null);
+            }
+            //ajax.open(\'GET\', pagina + "?rand=" + Math.random()*10000, true);
+             setInterval("explode(\'llamados\',\'online_atenciones.php\');",2000);
 
-var carg = \'<p align="center">Cargando...</p>\';
+            function oncli ()
+            {
+             var objeto = document.getElementById(\'imagen\');
+             objeto.onclick();
+            }
 
-function explode(nombre_div,pagina) {
-    var cont = document.getElementById(nombre_div); // aqui esta la var nombre_div
-    ajax = getXMLHttpRequest();
-    ajax.onreadystatechange = function() {
+            function mueveReloj(){
+                momentoActual = new Date()
+                hora = momentoActual.getHours()
+                minuto = momentoActual.getMinutes()
+                segundo = momentoActual.getSeconds()
 
-        if(ajax.readyState == 4) {
-            cont.innerHTML = ajax.responseText;
-        }
-    }
-    //ajax.open(\'GET\', pagina, true); // aqui esta la var "pagina"
-    //ajax.open(\'GET\', pagina + "?rand=" + Math.random()*10000, true);
-    ajax.open(\'GET\', pagina + "?id_AA='.$idemergencia_temp.'&orden='.$ordenar.'&rand=" + Math.random()*10000, true);
-    ajax.send(null);
-}
-//ajax.open(\'GET\', pagina + "?rand=" + Math.random()*10000, true);
- setInterval("explode(\'llamados\',\'online_atenciones.php\');",2000);
+                horaImprimible = hora + " : " + minuto + " : " + segundo
 
-function oncli ()
-{
- var objeto = document.getElementById(\'imagen\');
- objeto.onclick();
-}
-</script>
-<script language="JavaScript">
-function mueveReloj(){
-    momentoActual = new Date()
-    hora = momentoActual.getHours()
-    minuto = momentoActual.getMinutes()
-    segundo = momentoActual.getSeconds()
+                document.formulario.reloj.value = horaImprimible
 
-    horaImprimible = hora + " : " + minuto + " : " + segundo
-
-    document.formulario.reloj.value = horaImprimible
-
-    setTimeout("mueveReloj()",7000)
-    setTimeout("xajax_refresca_moviles(); ",7000)
-    //setTimeout("xajax_refresca_equipo('.$atencion_datos['movil_2'].'-0); ",30000)
-}
-</script>
-</head>
-<body onload="func_onload();" >
-'.titulo_encabezado_solo('Despacho',$path_imagen_logo).'
-<table border="1">
-<td colspan=9><a href="mod_alta.php" target="_blank"> ALTA EMERGENCIA</a></td>
-</table>
+                setTimeout("mueveReloj()",7000)
+                setTimeout("xajax_refresca_moviles(); ",7000)
+                //setTimeout("xajax_refresca_equipo('.$atencion_datos['movil_2'].'-0); ",30000)
+            }
+            
+        </script>
+    
+ </head>
+ <body onload="func_onload();" >
+    '.titulo_encabezado_solo('Despacho',$path_imagen_logo).'
+ <table border="0">
+    <td colspan=9>
+        <a href="mod_alta.php" target="_blank"> ALTA EMERGENCIA</a>
+    </td>
+ </table>
 <table border="1">
   <tr>    
     <td width="6%"  height="30">Socio</td>
@@ -831,7 +831,7 @@ function mueveReloj(){
   </tr>
   <tr>
    <td colspan="9">
-    <img src="imagenes/241.ico" width="16" height="15" />&nbsp;En L�nea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
+    <img src="imagenes/241.ico" width="16" height="15" />&nbsp;En Línea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
     PENDIENTES ('.($cantidad_traslados_pendi['CANTIDAD'] + $cantidad_eventos_pendi['CANTIDAD']).'): Traslados '.$cantidad_traslados_pendi['CANTIDAD'].'  Eventos '.$cantidad_eventos_pendi['CANTIDAD'].'
     DETALLE  <img style="CURSOR:pointer" src="imagenes/Alert 01.ico" width="16" height="16" onClick="window.open(\'popup_traslados_pendi.php\',\'ANULACIONES\', \'width=1200,height=700,scrollbars=yes\');"/>
    </td>
