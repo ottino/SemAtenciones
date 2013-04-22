@@ -22,8 +22,8 @@ $disabled = null;
 $html_salida = null; 
 
 
-# VECTOR QUE TIENE LAS FILAS HTML DE LOS NO APADRONADOS
-for ($c=1 ; $c<4 ; $c++)
+# No apoderados
+for ($c=1 ; $c<2 ; $c++)
 {
  $filas_nosocio.= 
  '
@@ -66,12 +66,8 @@ for ($c=1 ; $c<4 ; $c++)
 //instanciamos el objeto de la clase xajax
 $xajax = new xajax();
 $xajax->setCharEncoding("iso-8859-1");
-// funciones para la libreria
 
-
-
-function func_lista_planes ($id_plan)
-{
+function func_lista_planes ($id_plan) {
        $band = null;
        $html_salida = null;
        
@@ -148,8 +144,7 @@ function func_lista_planes ($id_plan)
    return $respuesta;
 }
 
-function func_input_planes ($id_plan)
-{
+function func_input_planes ($id_plan) {
    $html_salida = '<input id="i_busca_plan" size="7" type="text" value="'.$id_plan.'"
                     onChange="xajax_func_lista_planes(document.formulario.i_busca_plan.value);">';
    $salida = $html_salida;
@@ -158,12 +153,25 @@ function func_input_planes ($id_plan)
    return $respuesta;
 }
 
-function func_datos_padron ($id_plan , $dato , $filtro)
-{
+function func_datos_padron ($id_plan , $dato , $filtro) {
+    
  global $td_color;
  $disabled = null;
-
+ $padron_fetch = null;
  $envia_convenio = 0;
+ $_idpadron_f3=null;
+ $_tipo_f3=null;
+ $vector_nombres=null;
+ $edad = null;
+ $_idpadron_f3 = null ;
+ $_tipo_f3     = null;
+ $_sexo_f3     = null;
+ $_ident_f3    = null;
+ $_docu_f3     = null;
+ $_nombre_hidden = null;
+ $envia_convenio = null;
+ 
+ 
  switch ($filtro) {
     case 1:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
@@ -183,7 +191,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           }
           else
           {
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null;//edad($padron_fetch['fnacimiento']);
            $disabled='disabled="disabled"';
            $envia_convenio = $padron_fetch['convenio_id'];
           }
@@ -205,7 +213,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           }
           else
            {
-            $edad = edad($padron_fetch['fnacimiento']);
+            $edad = null;//edad($padron_fetch['fnacimiento']);
             $disabled='disabled="disabled"';
             $envia_convenio = $padron_fetch['convenio_id'];
            }
@@ -240,7 +248,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           {
 
            $vector_nombres.='<option value="'.$padron_fetch['documento'].'">'.$padron_fetch['nombre'].'</option>';
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null; //edad($padron_fetch['fnacimiento']);
            $disabled='disabled="disabled"';
            $_idpadron_f3 = $padron_fetch['nroafiliado'] ;
            $_tipo_f3     = '0';
@@ -255,7 +263,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           else if (mysql_num_rows($consulta_padron)==1)
                 {
                     $padron_fetch = mysql_fetch_array($consulta_padron);
-                    $edad = edad($padron_fetch['fnacimiento']);
+                    $edad = null;//edad($padron_fetch['fnacimiento']);
                     $disabled='disabled="disabled"';
                     $vector_nombres='<input id="td_padron_nombre" value="'.$padron_fetch['nombre'].'" size="80" type="text" '.$disabled.' />';
                     $_idpadron_f3 = $padron_fetch['nroafiliado'] ;
@@ -292,7 +300,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
 	</tr>
       <tr>
         <input id="td_padron_idpadron" value="'.$padron_fetch['nroafiliado'].'" type="hidden" '.$disabled.' /></td>
-        <input id="td_padron_tiposocio" value="'.$padron_fetch['tiposocio'].'" type="hidden" '.$disabled.' /></td>
+        <input id="td_padron_tiposocio" value="'.$padron_fetch['tipo_socio_id'].'" type="hidden" '.$disabled.' /></td>
         <td  align="center" >
         <input id="td_padron_nombre" value="'.$padron_fetch['nombre'].'" size="80" type="text" '.$disabled.' /></td>
         <td  align="center"><input id="td_padron_edad" value="'.$edad.'" size="4" type="text"  '.$disabled.' /></td>
@@ -350,90 +358,6 @@ function func_datos_padron ($id_plan , $dato , $filtro)
                        </table>
              ';
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-/*
-$consulta_planes = mysql_query("SELECT * FROM convenios;");
-
-// Cuando se carga la pagina se carga el combo de planes
-
-$html_lista_planes     ='<select name="list_planes" style="width:600px"
-                          onChange="xajax_func_input_planes(document.formulario.list_planes.value);"
-                          onBlur  ="document.formulario.i_busca_plan.value=
-                          document.formulario.list_planes.value" ;
-                         ">';
-$textarea = '<textarea cols="85" rows="6" class="estilotextarea" ></textarea>';
-$id_plan=$envia_convenio;
-       $band=1;
-       while ($fila=mysql_fetch_array($consulta_planes))
-             {
-               if (is_numeric($id_plan) == false)
-                  {
-                       $encontro = strripos($fila['descripcion'], $id_plan);
-                       $band=0;
-                       if ($encontro === false)
-                         {
-                          $textarea  = '<td aign="center">
-                                           <textarea cols="70" rows="7" class="estilotextarea" >'."\n"
-                                           .'  Enfermeria Domicilio : '.$fila['enfermeria_dom'].'      Base Consulta         :'.$fila['base_consulta']."\n"
-                                           .'  Enfermeria Base      : '.$fila['enfermeria_base'].'      Domicilio E/U         :'.$fila['domicilio_eu']."\n"
-                                           .'  Traslados            : '.$fila['traslados'].'   Domicilio Consulta    :'.$fila['domicilio_consulta']."\n"
-                                           .'  Base E/U             : '.$fila['base_eu'].'     Medicacion con Cargo  :'.$fila['medicacion_c_cargo']."\n"
-                                           .'  Medicacion sin Cargo : '.$fila['medicacion_s_cargo'].'      Descartables con Cargo:'.$fila['descartables_c_cargo']."\n"
-                                           .'  Descartab. sin Cargo : '.$fila['descartables_s_cargo'].'      Area Protegida        :'.$fila['area_protegida']."\n"
-                                           .'</textarea>
-                                        </td>';
-
-                           $html_lista_planes.='<option value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
-                         }else
-                              {
-                          $textarea  = '<td aign="center">
-                                           <textarea cols="70" rows="7" class="estilotextarea" >'."\n"
-                                           .'  Enfermeria Domicilio : '.$fila['enfermeria_dom'].'      Base Consulta         :'.$fila['base_consulta']."\n"
-                                           .'  Enfermeria Base      : '.$fila['enfermeria_base'].'      Domicilio E/U         :'.$fila['domicilio_eu']."\n"
-                                           .'  Traslados            : '.$fila['traslados'].'   Domicilio Consulta    :'.$fila['domicilio_consulta']."\n"
-                                           .'  Base E/U             : '.$fila['base_eu'].'     Medicacion con Cargo  :'.$fila['medicacion_c_cargo']."\n"
-                                           .'  Medicacion sin Cargo : '.$fila['medicacion_s_cargo'].'      Descartables con Cargo:'.$fila['descartables_c_cargo']."\n"
-                                           .'  Descartab. sin Cargo : '.$fila['descartables_s_cargo'].'      Area Protegida        :'.$fila['area_protegida']."\n"
-                                           .'</textarea>
-                                        </td>';
-                                $html_lista_planes.='<option selected="selected" value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
-                              }
-                  }else
-                       {
-                           if ($id_plan == $fila['id'])
-                           {
-			    $band=0;
-                          $textarea  = '<td aign="center">
-                                           <textarea cols="70" rows="7" class="estilotextarea" >'."\n"
-                                           .'  Enfermeria Domicilio : '.$fila['enfermeria_dom'].'      Base Consulta         :'.$fila['base_consulta']."\n"
-                                           .'  Enfermeria Base      : '.$fila['enfermeria_base'].'      Domicilio E/U         :'.$fila['domicilio_eu']."\n"
-                                           .'  Traslados            : '.$fila['traslados'].'   Domicilio Consulta    :'.$fila['domicilio_consulta']."\n"
-                                           .'  Base E/U             : '.$fila['base_eu'].'     Medicacion con Cargo  :'.$fila['medicacion_c_cargo']."\n"
-                                           .'  Medicacion sin Cargo : '.$fila['medicacion_s_cargo'].'      Descartables con Cargo:'.$fila['descartables_c_cargo']."\n"
-                                           .'  Descartab. sin Cargo : '.$fila['descartables_s_cargo'].'      Area Protegida        :'.$fila['area_protegida']."\n"
-                                           .'</textarea>
-                                        </td>';
-                           $html_lista_planes.='<option selected="selected" value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
-                           }
-                           else
-                            {
-                               $textarea = '<textarea cols="70" rows="7" class="estilotextarea" ></textarea>';
-                               $html_lista_planes.='<option value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
-                            }
-                       }
-             }
-
-      if ($band==1)
-          {
-           $html_lista_planes.='<option value="0" selected="selected">Lista de Planes</option>';
-          }
-
-       $html_lista_planes.='</select>';
-
-*/
-
    $textarea = '<textarea cols="85" rows="6" class="estilotextarea" >Plan: '.$envia_convenio.'</textarea>';
 
    $salida = $html_salida;
@@ -448,11 +372,11 @@ $id_plan=$envia_convenio;
    return $respuesta;
 }
 
-function func_datos_domicilio ($id_plan , $dato , $filtro)
-{
+function func_datos_domicilio ($id_plan , $dato , $filtro) {
  global $td_color , $path_imagenes_ruta, $fontdef;
  $padron_fetch =null;
- $img=null;
+ $img =null;
+ $casa = null;
  
  switch ($filtro) {
     case 1:
@@ -469,7 +393,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null;//edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 2:
@@ -486,7 +410,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null;//edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 3:
@@ -503,14 +427,16 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null;//edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
  }
 
  $consulta_zona = mysql_query("SELECT * FROM zonas");
+ 
  $zona_vector = '<select name="s_lista_zonas" onChange ="xajax_fun_alerta_zona(document.formulario.s_lista_zonas.value)">
                   <option selected="selected" value="0" >ZONAS</option>';
+ 
  while ($fila=mysql_fetch_array($consulta_zona))
  {
   if ($padron_fetch['idzona'] == $fila['idzonas'])
@@ -535,8 +461,6 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
                     <td width="5%" align="center">Nro</td>
                     <td width="5%" align="center">Piso</td>
                     <td width="5%" align="center">Dpto.</td>
-                    <td width="6%" align="center">Casa</td>
-                    <td width="6%" align="center">Mon</td>
                     <td width="45%" align="center">Referencia</td>
                   </tr>
                   <tr>
@@ -544,8 +468,6 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
                     <td><input value="'.$padron_fetch['nrocalle'].'" type="text"    id="td_padron_nro"   size="10%"/></td>
                     <td><input value="'.$padron_fetch['piso'].'" type="text"        id="td_padron_piso"  size="10%"/></td>
                     <td><input value="'.$padron_fetch['depto'].'" type="text"       id="td_padron_depto" size="10%"/></td>
-                    <td><input value="'.$padron_fetch['casa'].'" type="text"        id="td_padron_casa"  size="10%"/></td>
-                    <td><input value="'.$padron_fetch['monoblok'].'" type="text"    id="td_padron_mon"   size="10%"/></td>
                     <td align="center"><input  type="text" name="referencia" size="72"/></td>
 
                   </tr>
@@ -581,8 +503,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
    return $respuesta;
 }
 
-function fun_alerta_zona ($id_zona)
-{
+function fun_alerta_zona ($id_zona) {
   global $path_imagenes_ruta;
   $html_salida = null; 
   
@@ -603,8 +524,7 @@ function fun_alerta_zona ($id_zona)
    return $respuesta;
  }
 
-function func_lista_motivos ($idmotivo)
-{
+function func_lista_motivos ($idmotivo) {
  //$ids = explode ("-",$idmotivo);
  $ids ['0'] = substr($idmotivo, 0, 1);
  $ids ['1'] = substr($idmotivo, 1, 2);
@@ -638,8 +558,7 @@ function func_lista_motivos ($idmotivo)
  return $respuesta;
 }
 
-function busca_motivos($idmotivo)
-{
+function busca_motivos($idmotivo) {
 
  $html_salida = '<input type="text" id="i_busca_motivos" value="'.$idmotivo.'" size="5"
                   onKeyUp="xajax_func_lista_motivos(document.formulario.i_busca_motivos.value);
@@ -662,13 +581,12 @@ function busca_motivos($idmotivo)
  return $respuesta;
 }
 
-function lista_color($idcolor)
-{
+function lista_color($idcolor) {
  global $path_imagenes_ruta;
  $foquito = null;
- //$ids = explode ("-",$idcolor);
+ $td_color = null;
+
  $ids ['0'] = substr($idcolor, 0, 1);
- //$ids ['1'] = substr($idmotivo, 1, 2);
  
  $consulta_color = mysql_query ("SELECT * FROM colores order by 1");
  $html_salida='<select name="s_lista_colores" onchange="xajax_lista_color(document.formulario.s_lista_colores.value)">';
@@ -997,10 +915,6 @@ $xajax->registerFunction("agrega_emergencia");
 $xajax->registerFunction("agrega_emergencia_ctraslado");
 
 $xajax->processRequests();
-//<link href="estilos.css" rel="stylesheet" type="text/css" />
-
-/* Estilo de Mauro*/
-//<link href="css/sem.css" type="text/css" rel="stylesheet">
 
 $html_salida = '
 <html>
@@ -1048,15 +962,12 @@ function on_Load()
 
     <table align="center" width="100%" class="datos_receptor">
       <tr>
-        <td width="25%"  colspan="2" align="center">Datos del receptor</td>
-        <td width="15%"  align="center">Fecha</td>
+        <td width="25%"  align="center">Receptor</td>
         <td width="15%"  align="center">Hora</td>
         <td width="12%"  align="center">Hora Llamado</td>
       </tr>
       <tr>
-        <td width="4%"  >'.$G_legajo.'</td>
         <td width="21%" align="center">'.$G_usuario.'</td>
-        <td width="15%" align="center"><input type="text" id="muestra_fecha" value="'.muestra_fecha().'" size="6" /></td>
         <td width="15%" align="center"><input type="text" name="reloj" size="6"></td>
         <td width="7%"  align="center"><input type="text" id="hora" value="'.muestra_hora().'" size="4"/></td>
       </tr>
@@ -1076,7 +987,7 @@ function on_Load()
          onBlur="xajax_func_datos_padron(document.formulario.i_busca_plan.value,
                                           document.formulario.i_busca_padron.value,
                                           document.formulario.s_filtro_busqueda.value);
-                  xajax_func_datos_domicilio(document.formulario.i_busca_plan.value,
+                 xajax_func_datos_domicilio(document.formulario.i_busca_plan.value,
                                           document.formulario.i_busca_padron.value,
                                           document.formulario.s_filtro_busqueda.value);
                   "

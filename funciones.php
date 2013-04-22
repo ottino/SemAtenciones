@@ -495,9 +495,17 @@ $row=mysql_fetch_array($result);
 return($row['articulo']);
 }
 
-// Calcula la edad (formato: a�o/mes/dia)
+// Calcula la edad (formato: ano/mes/dia)
 function edad($edad)
 {
+    
+$anio=null;
+$mes=null;
+$dia=null;
+$anio_dif=null;
+$mes_dif =null;
+$dia_dif =null;
+
 list($anio,$mes,$dia) = explode("-",$edad);
 $anio_dif = date("Y") - $anio;
 $mes_dif = date("m") - $mes;
