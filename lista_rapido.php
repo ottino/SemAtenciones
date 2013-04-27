@@ -6,66 +6,7 @@ function muestra_listado_temp ($idemergencia_temp_11 , $ordenar)
 include_once ('config.php');
 $td_color = '';
 $body_color= '';
-//global $td_color , $font_family , $body_color;
-//global $fontdef, $fontt, $fontreg;
 
-//*  CONEXION A LA BASEDE DATOS
-//$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-//mysql_select_db($bd_database, $bd);
-//*
-
-//$idemergencia_temp_11 = $_GET['id_AA'];
-
-/*
-// contadores de foquitos.
-  $cons_cantidad_traslados_pendi = mysql_query ("
-                                              SELECT count(*) AS CANTIDAD
-                                              FROM atenciones_temp
-                                              WHERE (color = '4')
-                                              AND traslado_aux > now( )
-                                              AND abierta <> '2'
-                                              ORDER BY color ASC , id ASC ");
-  $cantidad_traslados_pendi = mysql_fetch_array($cons_cantidad_traslados_pendi);
-
-  $cons_cantidad_eventos_pendi = mysql_query ("
-                                              SELECT count(*) AS CANTIDAD
-                                              FROM atenciones_temp
-                                              WHERE (color = '7')
-                                              AND traslado_aux > now( )
-                                              AND abierta <> '2'
-                                              ORDER BY color ASC , id ASC");
-  $cantidad_eventos_pendi = mysql_fetch_array($cons_cantidad_eventos_pendi);
-
-
-  $consulta_foquitos = mysql_query ("SELECT color, count( * ) AS cantidad
-                                     FROM atenciones_temp
-                                     WHERE abierta <> '2'
-                                     GROUP BY color
-                                     ORDER BY 2 desc");
-
-  while ($fila=mysql_fetch_array($consulta_foquitos))
-   {
-    if ($fila['color'] == 4)
-     {
-      //if ($cantidad_traslados_pendi['CANTIDAD'] < $fila['cantidad'])
-      $foquitos.=$fila['cantidad']-$cantidad_traslados_pendi['CANTIDAD'].'&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp';
-     }else
-     if ($fila['color'] == 7)
-     {
-      //if ($cantidad_traslados_pendi['CANTIDAD'] < $fila['cantidad'])
-      $foquitos.=$fila['cantidad']-$cantidad_eventos_pendi['CANTIDAD'].'&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp';
-     }else
-     {
-       $foquitos.=$fila['cantidad'].'&nbsp;<img src="imagenes/'.$fila['color'].'.ico" width="15" height="15" />&nbsp';
-     }
-   }
-  $consulta_cantidad_total = mysql_query ("SELECT count( * ) AS cantidad
-                                           FROM atenciones_temp
-                                           WHERE abierta <> '2'");
-
-  $cantidad_total = mysql_fetch_array($consulta_cantidad_total);
-*/
-//$consulta = mysql_query ("SELECT * FROM atenciones_temp WHERE abierta <> 2 and color <> 4 ORDER BY color asc , id asc");
 switch ($ordenar) {
     case 1:
     $consulta = mysql_query ( "SELECT * FROM atenciones_temp, colores WHERE color = idcolor AND abierta <> '2' AND traslado_aux <= now( )
