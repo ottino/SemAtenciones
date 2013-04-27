@@ -435,7 +435,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro) {
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = null;//edad($padron_fetch['fnacimiento']);
+           $edad = edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 3:
@@ -452,7 +452,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro) {
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = null;//edad($padron_fetch['fnacimiento']);
+           $edad = edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
  }
@@ -503,9 +503,9 @@ function func_datos_domicilio ($id_plan , $dato , $filtro) {
                    <td align="center" colspan="2">Entre</td>
                   </tr>
                   <tr>
-                   <td><input id="td_padron_barrio"  size="100"></td>
-                   <td><input id="td_padron_entre1"  size="45"></td>
-                   <td><input id="td_padron_entre2"  size="45"></td>
+                   <td><input id="td_padron_barrio" value="'.$padron_fetch['barrio'].'" size="100"></td>
+                   <td><input id="td_padron_entre1" value="'.$padron_fetch['entre1'].'" size="45"></td>
+                   <td><input id="td_padron_entre2" value="'.$padron_fetch['entre2'].'" size="45"></td>
                   </tr>
                  </table>
                  <table border="0" align="left" width="60%">
