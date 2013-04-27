@@ -1,10 +1,8 @@
 <?php
-//funciones propias
+
 function muestra_listado_temp ($idemergencia_temp_11 , $ordenar)
 {
-//include ('funciones.php');
 
-//archivo de configuracion
 include_once ('config.php');
 $td_color = '';
 $body_color= '';

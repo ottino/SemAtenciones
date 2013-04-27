@@ -29,24 +29,20 @@ nosocio4checked  , nosocio4 , noedad4 , nosexo4, noiden4 , nodocum4 ,
 nosocio5checked  , nosocio5 , noedad5 , nosexo5, noiden5 , nodocum5 
 )
   {
-     //alert (nosocio2checked);
-     // VALIDACIONES 
- 	 //var motivo_explode = motivo1.split('-');
- 	 var motivo_explode = motivo1.substr(0,1);
- 	 var fecha_explode = fecha.split('.');
-	 //alert (fecha_explode[0]+'/'+fecha_explode[1]+'/'+fecha_explode[2]);
 
+    var motivo_explode = motivo1.substr(0,1);
+    var fecha_explode = fecha.split('.');
 
     var bandera = 0;
-	var bandera_nosocio1 = 0;
-	var bandera_nosocio2 = 0;
-	var bandera_nosocio3 = 0;
-	var bandera_nosocio4 = 0;
-	var bandera_nosocio5 = 0;
-	var er = /^[0-9]+$/;  
+    var bandera_nosocio1 = 0;
+    var bandera_nosocio2 = 0;
+    var bandera_nosocio3 = 0;
+    var bandera_nosocio4 = 0;
+    var bandera_nosocio5 = 0;
+    var er = /^[0-9]+$/;  
       
-	  if ((sexo != 'M') && (sexo != 'F')&& (sexo != 'm') && (sexo != 'f'))
-	     alert ("Ingrese un sexo valido");
+    if ((sexo != 'M') && (sexo != 'F')&& (sexo != 'm') && (sexo != 'f'))
+       alert ("Ingrese un sexo valido");
       else 
 	  if ((nombre == '') || (nombre == null) || (nombre == " "))
 	     alert ("Ingrese nombre");
@@ -159,7 +155,7 @@ nosocio5checked  , nosocio5 , noedad5 , nosexo5, noiden5 , nodocum5
 	 if (bandera == 1)
      {	 
 	   var ventana_cerrar = window.self; 
-	   //ventana=confirm("¿Esta seguro que desea agregar?");                        
+	   //ventana=confirm("ï¿½Esta seguro que desea agregar?");                        
 	   //if (ventana) 
 	    //{
 		 if (check_traslado == 1)
@@ -204,7 +200,7 @@ function check_movil(idatenciontemp,idmovil,control)
 	      }
 		  else
 	      {	  
-		    //ventana=confirm("¿Esta seguro que desea realizar el despacho?");                        
+		    //ventana=confirm("ï¿½Esta seguro que desea realizar el despacho?");                        
 		   // if (ventana) 
 		    //{
 		     xajax_asigna_movil(idatenciontemp,idmovil);
@@ -344,7 +340,7 @@ alert (dni_socio);
     Calendar.setup({ 
      inputField     :    "cla_fecha",     // id del campo de texto 
       ifFormat     :     "%Y/%m/%d",     // formato de la fecha que se escriba en el campo de texto 
-      button     :    "lanzador"     // el id del botón que lanzará el calendario 
+      button     :    "lanzador"     // el id del botï¿½n que lanzarï¿½ el calendario 
  }); 
 };
 
@@ -352,7 +348,7 @@ alert (dni_socio);
     Calendar.setup({ 
      inputField     :    "cla_fecha1",     // id del campo de texto 
       ifFormat     :     "%Y/%m/%d",     // formato de la fecha que se escriba en el campo de texto 
-      button     :    "lanzador1"     // el id del botón que lanzará el calendario 
+      button     :    "lanzador1"     // el id del botï¿½n que lanzarï¿½ el calendario 
  }); 
 };
 //********************************************************************
@@ -437,7 +433,7 @@ check_traslado , dia_traslado , mes_traslado , anio_traslado , hora_traslado , m
 	 if (bandera == 1)
      {	 
 	   var ventana_cerrar = window.self; 
-//	   ventana=confirm("¿Esta seguro que desea agregar?");                        
+//	   ventana=confirm("ï¿½Esta seguro que desea agregar?");                        
 //	   if (ventana) 
 	   // {
 		 if (check_traslado == 1)

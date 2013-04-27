@@ -23,7 +23,7 @@ $html_salida = null;
 
 
 # No apoderados
-for ($c=1 ; $c<2 ; $c++)
+for ($c=1 ; $c<5 ; $c++)
 {
  $filas_nosocio.= 
  '
@@ -687,10 +687,11 @@ function agrega_emergencia (
          //$moti_explode = explode ("-",$_motivo1);
 
 		
-		$moti_explode ['0'] = substr($_motivo1, 0, 1);
+	$moti_explode ['0'] = substr($_motivo1, 0, 1);
         $moti_explode ['1'] = substr($_motivo1, 1, 2);
-		$_plan = $_plan + 0;
-         $insert_atencion = '
+	$_plan = $_plan + 0;
+        
+        $insert_atencion = '
          insert into atenciones_temp
          (fecha,telefono,plan,
           horallam,socio,
@@ -727,30 +728,32 @@ function agrega_emergencia (
           "'.utf8_decode($_opedesp).'" , "'.$_fecha.'"
           )
          ';
+        
   // insert de la emergencia en atenciones temp
    global $G_legajo , $parametros_js;
    $result = mysql_query($insert_atencion);
    if (!$result) {
     $boton = '<input  type="button" value="Error! modificar y presionar nuevamente"
-			           onclick=" check_emergencia(
-			           document.formulario.muestra_fecha.value,document.formulario.telefono.value,
-			           document.formulario.i_busca_plan.value,document.formulario.hora.value,
-			           document.formulario.td_padron_idpadron.value,document.formulario.td_padron_nombre.value,
-			           document.formulario.td_padron_tiposocio.value,document.formulario.td_padron_edad.value,
-			           document.formulario.td_padron_sexo.value,document.formulario.td_padron_identi.value,
-			           document.formulario.td_padron_docum.value,document.formulario.td_padron_calle.value,
-			           document.formulario.td_padron_nro.value,document.formulario.td_padron_piso.value,
-			           document.formulario.td_padron_depto.value,document.formulario.td_padron_casa.value,
-			           document.formulario.td_padron_mon.value,document.formulario.td_padron_barrio.value,
-			           document.formulario.td_padron_entre1.value,document.formulario.td_padron_entre2.value,
-			           document.formulario.td_padron_localidad.value,document.formulario.referencia.value,
-			           document.formulario.s_lista_zonas.value,document.formulario.i_busca_motivos.value,
-			           document.formulario.s_lista_colores.value,document.formulario.obs1.value,
-			           document.formulario.obs2.value,'.$G_legajo.' ,
-			           document.formulario.check_traslado.value , document.formulario.dia_traslado.value ,
-			           document.formulario.mes_traslado.value   , document.formulario.anio_traslado.value ,
-			           document.formulario.hora_traslado.value  , document.formulario.minuto_traslado.value ,
-					   '.$parametros_js.' 
+                    onclick=" check_emergencia(
+                    '."'".date("d.m.Y")."'".',document.formulario.telefono.value,
+                    document.formulario.i_busca_plan.value,document.formulario.hora.value,
+                    document.formulario.td_padron_idpadron.value,document.formulario.td_padron_nombre.value,
+                    document.formulario.td_padron_tiposocio.value,document.formulario.td_padron_edad.value,
+                    document.formulario.td_padron_sexo.value,0,
+                    document.formulario.td_padron_docum.value,document.formulario.td_padron_calle.value,
+                    document.formulario.td_padron_nro.value,document.formulario.td_padron_piso.value,
+                    document.formulario.td_padron_depto.value,0,
+                    0,document.formulario.td_padron_barrio.value,
+                    document.formulario.td_padron_entre1.value,document.formulario.td_padron_entre2.value,
+                    document.formulario.td_padron_localidad.value,document.formulario.referencia.value,
+                    document.formulario.s_lista_zonas.value,document.formulario.i_busca_motivos.value,
+                    document.formulario.s_lista_colores.value,document.formulario.obs1.value,
+                    document.formulario.obs2.value,'.$G_legajo.' ,
+                    document.formulario.check_traslado.value , document.formulario.dia_traslado.value ,
+                    document.formulario.mes_traslado.value   , document.formulario.anio_traslado.value ,
+                    document.formulario.hora_traslado.value  , document.formulario.minuto_traslado.value ,
+                            '.$parametros_js.'
+                            );"
            	   );"/> ';
      
    }else 
@@ -759,10 +762,10 @@ function agrega_emergencia (
 
     // recupero id para hacer altas de clientes no  apadronados
     $consulta_id = mysql_query ('select id from atenciones_temp
-                               where fecha     = "'.$_fecha.'"     and plan = "'.$_plan.'"
-                                and  horallam  = "'.$_horallam.'"  and nombre = "'.$_nombre.'"
-                                and  tiposocio = "'.$_tiposocio.'" and motivo1  = '.$moti_explode[0].'
-                                and motivo2 = '.$moti_explode[1]);
+                                 where fecha     = "'.$_fecha.'"     and plan = "'.$_plan.'"
+                                 and  horallam  = "'.$_horallam.'"  and nombre = "'.$_nombre.'"
+                                 and  tiposocio = "'.$_tiposocio.'" and motivo1  = '.$moti_explode[0].'
+                                 and motivo2 = '.$moti_explode[1]);
 
 
       $fetch_idatencion=mysql_fetch_array($consulta_id);
@@ -774,14 +777,13 @@ function agrega_emergencia (
 			if ($_bandera_nosocio5 == 1) { $insert_nosocio5 = mysql_query ('insert into clientes_nopadron (idatencion , nombre , edad , sexo , os , dni) values ("'.$fetch_idatencion['id'].'" , "'.$_nosocio5.'" , "'.$_noedad5.'" , "'.$_nosexo5.'" , "'.$_noiden5.'" , "'.$_nodocum5.'" ) '); }
 
    }
-   //$insert_atencion='';
-   $insert_atencion='';
+
    //instanciamos el objeto para generar la respuesta con ajax
    $respuesta = new xajaxResponse();
-   //escribimos en la capa con id="respuesta" el texto que aparece en $salida
-   $respuesta->addAssign("mensaje_agrega","innerHTML",$boton);
 
-   //tenemos que devolver la instanciaci�n del objeto xajaxResponse
+   $respuesta->addAssign("mensaje_agrega","innerHTML",$boton);
+   //$respuesta->addAssign("mensaje_agrega","innerHTML",$insert_atencion);
+
    return $respuesta;
 }
 
@@ -1013,17 +1015,6 @@ function on_Load()
         <td width=""  colspan="2" align="center" >Planes</td>
      </tr>
      <tr>
-        <td width="10%"  colspan="" align="center" style="">
-        <input type="text" size="20" id="i_busca_padron"
-         onBlur="xajax_func_datos_padron(document.formulario.i_busca_plan.value,
-                                          document.formulario.i_busca_padron.value,
-                                          document.formulario.s_filtro_busqueda.value);
-                 xajax_func_datos_domicilio(document.formulario.i_busca_plan.value,
-                                          document.formulario.i_busca_padron.value,
-                                          document.formulario.s_filtro_busqueda.value);
-                  "
-                                          />
-       </td>
        <td width="10%"  colspan="" align="center" style="">
         <select name="s_filtro_busqueda"
          onKeyUp="xajax_func_datos_padron(document.formulario.i_busca_plan.value,
@@ -1038,7 +1029,18 @@ function on_Load()
          <option value="2">DNI</option>
          <option value="3" selected="selected" >Filtro Libre</option>
         </select>
-      </td>
+      </td>     
+        <td width="10%"  colspan="" align="center" style="">
+        <input type="text" size="20" id="i_busca_padron"
+         onBlur="xajax_func_datos_padron(document.formulario.i_busca_plan.value,
+                                          document.formulario.i_busca_padron.value,
+                                          document.formulario.s_filtro_busqueda.value);
+                 xajax_func_datos_domicilio(document.formulario.i_busca_plan.value,
+                                          document.formulario.i_busca_padron.value,
+                                          document.formulario.s_filtro_busqueda.value);
+                  "
+                                          />
+       </td>
        <td width="15%"  colspan="" align="center" style=""><input type="text" id="telefono" /></td>
        <td width="10%"  colspan="" align="center" style="">
         <div id="i_lista_planes">
@@ -1108,15 +1110,15 @@ function on_Load()
      <div id="mensaje_agrega">
         <input  type="button" value="Agregar Emergencia"
                onclick=" check_emergencia(
-               document.formulario.muestra_fecha.value,document.formulario.telefono.value,
+               '."'".date("d.m.Y")."'".',document.formulario.telefono.value,
                document.formulario.i_busca_plan.value,document.formulario.hora.value,
                document.formulario.td_padron_idpadron.value,document.formulario.td_padron_nombre.value,
                document.formulario.td_padron_tiposocio.value,document.formulario.td_padron_edad.value,
-               document.formulario.td_padron_sexo.value,document.formulario.td_padron_identi.value,
+               document.formulario.td_padron_sexo.value,0,
                document.formulario.td_padron_docum.value,document.formulario.td_padron_calle.value,
                document.formulario.td_padron_nro.value,document.formulario.td_padron_piso.value,
-               document.formulario.td_padron_depto.value,document.formulario.td_padron_casa.value,
-               document.formulario.td_padron_mon.value,document.formulario.td_padron_barrio.value,
+               document.formulario.td_padron_depto.value,0,
+               0,document.formulario.td_padron_barrio.value,
                document.formulario.td_padron_entre1.value,document.formulario.td_padron_entre2.value,
                document.formulario.td_padron_localidad.value,document.formulario.referencia.value,
                document.formulario.s_lista_zonas.value,document.formulario.i_busca_motivos.value,
