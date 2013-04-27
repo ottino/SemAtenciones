@@ -161,7 +161,7 @@ function func_lista_planes ($id_plan) {
 }
 
 function func_input_planes ($id_plan) {
-    
+  
    $html_salida = '<input id="i_busca_plan" size="7" type="text" value="'.$id_plan.'"
                     onChange="xajax_func_lista_planes(document.formulario.i_busca_plan.value);">';
    
@@ -210,7 +210,7 @@ function func_datos_padron ($id_plan , $dato , $filtro) {
 
           if (mysql_affected_rows()<>0)
           {
-           $edad = null;
+           $edad = edad($padron_fetch['fnacimiento']);
            $disabled='disabled="disabled"';
            $envia_convenio = $padron_fetch['convenio_id'];
           }
@@ -232,7 +232,7 @@ function func_datos_padron ($id_plan , $dato , $filtro) {
           
           if (mysql_affected_rows()<>0)
            {
-            $edad = null;
+            $edad = edad($padron_fetch['fnacimiento']);
             $disabled='disabled="disabled"';
             $envia_convenio = $padron_fetch['convenio_id'];
            }
@@ -271,7 +271,8 @@ function func_datos_padron ($id_plan , $dato , $filtro) {
             {
 
                 $vector_nombres.='<option value="'.$padron_fetch['documento'].'">'.$padron_fetch['nombre'].'</option>';
-                $edad = null;
+                $edad = edad($padron_fetch['fnacimiento']);                     
+
                 $disabled='disabled="disabled"';
                 $_idpadron_f3 = $padron_fetch['nroafiliado'] ;
                 $_tipo_f3     = '0';
@@ -288,7 +289,7 @@ function func_datos_padron ($id_plan , $dato , $filtro) {
           else if (mysql_num_rows($consulta_padron)==1)
           {
                     $padron_fetch   = mysql_fetch_array($consulta_padron);
-                    $edad           = null;
+                    $edad           = edad($padron_fetch['fnacimiento']);
                     $disabled       ='disabled="disabled"';
                     $vector_nombres ='<input id="td_padron_nombre" value="'.$padron_fetch['nombre'].'" size="80" type="text" '.$disabled.' />';
                     $_idpadron_f3   = $padron_fetch['nroafiliado'] ;
@@ -417,7 +418,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro) {
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = null;//edad($padron_fetch['fnacimiento']);
+           $edad = edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 2:

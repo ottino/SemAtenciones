@@ -506,6 +506,9 @@ $anio_dif=null;
 $mes_dif =null;
 $dia_dif =null;
 
+if ($edad == '' || $edad == null || $edad == ' ')
+    return 0;
+
 list($anio,$mes,$dia) = explode("-",$edad);
 $anio_dif = date("Y") - $anio;
 $mes_dif = date("m") - $mes;
