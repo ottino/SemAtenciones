@@ -1,19 +1,11 @@
 <?php
-######################INCLUDES################################
-//archivo de configuracion
+
 include_once ('config.php');
-
-//funciones propias
 include ('funciones.php');
-
-//incluímos la clase ajax
 require ('xajax/xajax.inc.php');
-
-//login del usuario
 require_once ('cookie.php');
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// VARIABLES GLOBALES - DATOS DE USUARIO LOGON
+// Info. del usuario
 $cookie = new cookieClass;
 $G_usuario = $cookie->get("usuario");
 $G_legajo  = $cookie->get("legajo");
@@ -27,17 +19,15 @@ if ($segmenu <> "OK")
    exit;
   }
 
+// Conexion con la base
+conectar_db ($bd_host , $bd_database , $bd_user , $bd_pass);
 
-
-
-################### Conexion a la base de datos##########################
-$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-mysql_select_db($bd_database, $bd);
-
-######################DEF FUNCIONES XAJAX########################
 # parametros de info a editar
 $id_ate_edit = $_GET['id_atencion'];
-//echo "aaa".$id_ate_edit;
+$_FILAVINC   = null;
+$td_color    = null;
+$disabled    = null; 
+
 $consulta_atencion_edit = mysql_query("select * from atenciones_temp where id=".$id_ate_edit);
 $atencion_datos_edit = mysql_fetch_array($consulta_atencion_edit);
 $hora_tras = $atencion_datos_edit ['horallam'];
@@ -89,13 +79,16 @@ $xajax->decodeUTF8InputOn() ;
 
 function func_lista_planes ($id_plan)
 {
-       $consulta_planes = mysql_query("SELECT * FROM planes WHERE estado not in ('B','D') order by 2");
+       $html_salida = null;
+       $consulta_planes = mysql_query("SELECT * FROM convenios");
+       
        $html_salida     ='<select name="list_planes"
                                   onchange="xajax_func_input_planes(document.formulario.list_planes.value);
                                   xajax_fun_alerta_zona(0);
                                   xajax_func_lista_planes(document.formulario.list_planes.value);"
                                   onBlur  ="document.formulario.i_busca_plan.value= document.formulario.list_planes.value" ;
                                   ">';
+       
        $textarea = '<textarea cols="80" rows="7"></textarea>';
 
 
@@ -104,27 +97,27 @@ function func_lista_planes ($id_plan)
              {
                if (is_numeric($id_plan) == false)
                   {
-                       $encontro = strripos($fila['descplan'], $id_plan);
+                       $encontro = strripos($fila['descripcion'], $id_plan);
                        $band=0;
                        if ($encontro === false)
                          {
-                          $html_salida.='<option value="'.$fila['idplan'].'" />'.elimina_caracteres(htmlentities($fila['descplan'])).'</option>';
+                          $html_salida.='<option value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
                          }else
                               {
-                                $textarea = '<td><textarea cols="80" rows="7">'.elimina_caracteres(htmlentities($fila['datos'])).'</textarea></td>';
-                                $html_salida.='<option selected="selected" value="'.$fila['idplan'].'" />'.elimina_caracteres(htmlentities($fila['descplan'])).'</option>';
+                                $textarea = '<td><textarea cols="80" rows="7">'.elimina_caracteres(htmlentities($fila['descripcion'])).'</textarea></td>';
+                                $html_salida.='<option selected="selected" value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
                               }
                   }else
                        {
-                           if ($id_plan == $fila['idplan'])
+                           if ($id_plan == $fila['id'])
                            {
                             $band=0;
-                            $textarea = '<td><textarea cols="80" rows="7">'.elimina_caracteres(htmlentities($fila['datos'])).'</textarea></td>';
-                            $html_salida.='<option selected="selected" value="'.$fila['idplan'].'" />'.elimina_caracteres(htmlentities($fila['descplan'])).'</option>';
+                            $textarea = '<td><textarea cols="80" rows="7">'.elimina_caracteres(htmlentities($fila['descripcion'])).'</textarea></td>';
+                            $html_salida.='<option selected="selected" value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
                            }
                            else
                             {
-                             $html_salida.='<option value="'.$fila['idplan'].'" />'.elimina_caracteres(htmlentities($fila['descplan'])).'</option>';
+                             $html_salida.='<option value="'.$fila['id'].'" />'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
                             }
                        }
              }
@@ -138,6 +131,7 @@ function func_lista_planes ($id_plan)
    $respuesta = new xajaxResponse();
    $respuesta->addAssign("s_lista_planes","innerHTML",$salida);
    $respuesta->addAssign("div_muestra_textarea","innerHTML",$textarea);
+   
    return $respuesta;
 }
 
@@ -146,6 +140,7 @@ function func_input_planes ($id_plan)
    $html_salida = '<input id="i_busca_plan" size="7" type="text" value="'.$id_plan.'"
                     onChange="xajax_fun_alerta_zona(0)"
                     onKeyUp="xajax_func_lista_planes(document.formulario.i_busca_plan.value);">';
+   
    $salida = $html_salida;
    $respuesta = new xajaxResponse();
    $respuesta->addAssign("i_lista_planes","innerHTML",$salida);
@@ -155,22 +150,28 @@ function func_input_planes ($id_plan)
 function func_datos_padron ($id_plan , $dato , $filtro)
 {
  global $td_color;
+ $disabled    = null; 
 
 
  switch ($filtro) {
     case 1:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
          {
-          $consulta_padron=mysql_query ("SELECT * FROM padron WHERE idpadron ='".$dato."'
-                                         AND ( plan = '".ltrim($id_plan ,'0')."' OR plan = '".$id_plan."')");
+          $consulta_padron=mysql_query ("SELECT * 
+                                         FROM clientes 
+                                         WHERE id ='".$dato."'
+                                         AND ( convenio_id = '".ltrim($id_plan ,'0')."' OR convenio_id = '".$id_plan."')");
+          
           $padron_fetch = mysql_fetch_array($consulta_padron);
+                           
+                  
           if (mysql_affected_rows()==0)
           {
            $edad = '&nbsp;';
           }
           else
           {
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null ; //edad($padron_fetch['fnacimiento']);
            $disabled='disabled="disabled"';
           }
          } else  $edad = ' ';
@@ -178,8 +179,8 @@ function func_datos_padron ($id_plan , $dato , $filtro)
     case 2:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
          {
-          $consulta_padron=mysql_query ("SELECT * FROM padron WHERE documento ='".$dato."'
-                                         AND ( plan = '".ltrim($id_plan ,'0')."' OR plan = '".$id_plan."')");
+          $consulta_padron=mysql_query ("SELECT * FROM clientes WHERE documento ='".$dato."'
+                                         AND ( convenio_id = '".ltrim($id_plan ,'0')."' OR convenio_id = '".$id_plan."')");
           $padron_fetch = mysql_fetch_array($consulta_padron);
           if (mysql_affected_rows()==0)
           {
@@ -187,7 +188,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           }
           else
            {
-            $edad = edad($padron_fetch['fnacimiento']);
+            $edad = null ; //edad($padron_fetch['fnacimiento']);
             $disabled='disabled="disabled"';
            }
          } else  $edad = ' ';
@@ -195,8 +196,8 @@ function func_datos_padron ($id_plan , $dato , $filtro)
     case 3:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
          {
-          $consulta_padron=mysql_query ("SELECT * FROM padron WHERE (nombre like '%".$dato."%' OR idpadron = '".$dato."')
-                                         AND ( plan = '".ltrim($id_plan ,'0')."' OR plan = '".$id_plan."')");
+          $consulta_padron=mysql_query ("SELECT * FROM clientes WHERE (nombre like '%".$dato."%' OR id = '".$dato."')
+                                         AND ( convenio_id = '".ltrim($id_plan ,'0')."' OR convenio_id = '".$id_plan."')");
 
           if (mysql_num_rows($consulta_padron)>1)
           {
@@ -212,13 +213,13 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           while ($padron_fetch = mysql_fetch_array($consulta_padron))
           {
 
-           $vector_nombres.='<option selected="" value="'.$padron_fetch['idpadron'].'">'.elimina_caracteres(htmlentities($padron_fetch['nombre'])).'</option>';
-           $edad = edad($padron_fetch['fnacimiento']);
+           $vector_nombres.='<option selected="" value="'.$padron_fetch['id'].'">'.elimina_caracteres(htmlentities($padron_fetch['nombre'])).'</option>';
+           $edad = null ; //edad($padron_fetch['fnacimiento']);
            $disabled='disabled="disabled"';
-           $_idpadron_f3 = $padron_fetch['idpadron'] ;
+           $_idpadron_f3 = $padron_fetch['id'] ;
            $_tipo_f3     = $padron_fetch['tiposocio'];
            $_sexo_f3     = $padron_fetch['sexo'];
-           $_ident_f3    = elimina_caracteres(htmlentities($padron_fetch['identificacion']));
+           $_ident_f3    = elimina_caracteres(htmlentities($padron_fetch['nroafiliado']));
            $_docu_f3     = $padron_fetch['documento'];
            $_nombre_hidden = $padron_fetch['nombre'];
 
@@ -228,13 +229,13 @@ function func_datos_padron ($id_plan , $dato , $filtro)
           else if (mysql_num_rows($consulta_padron)==1)
                 {
                     $padron_fetch = mysql_fetch_array($consulta_padron);
-                    $edad = edad($padron_fetch['fnacimiento']);
+                    $edad = null; //edad($padron_fetch['fnacimiento']);
                     $disabled='disabled="disabled"';
                     $vector_nombres='<input id="td_padron_nombre" value="'.elimina_caracteres(htmlentities($padron_fetch['nombre'])).'" style=" background-color:'.$td_color.'" size="80" type="text" '.$disabled.' />';
-                    $_idpadron_f3 = $padron_fetch['idpadron'] ;
+                    $_idpadron_f3 = $padron_fetch['id'] ;
                     $_tipo_f3     = $padron_fetch['tiposocio'];
                     $_sexo_f3     = $padron_fetch['sexo'];
-                    $_ident_f3    = elimina_caracteres(htmlentities($padron_fetch['identificacion']));
+                    $_ident_f3    = elimina_caracteres(htmlentities($padron_fetch['nroafiliado']));
                     $_docu_f3     = $padron_fetch['documento'];
                     $_nombre_hidden = $padron_fetch['nombre'];
                 }
@@ -255,12 +256,12 @@ function func_datos_padron ($id_plan , $dato , $filtro)
   {
      $html_salida ='
       <tr>
-        <td  colspan="" align="center" ><input id="td_padron_idpadron" value="'.$padron_fetch['idpadron'].'" style=" background-color:'.$td_color.'" size="12" type="hidden" '.$disabled.' /></td>
+        <td  colspan="" align="center" ><input id="td_padron_idpadron" value="'.$padron_fetch['id'].'" style=" background-color:'.$td_color.'" size="12" type="hidden" '.$disabled.' /></td>
         <td  colspan="" align="center" ><input id="td_padron_tiposocio" value="'.$padron_fetch['tiposocio'].'" style=" background-color:'.$td_color.'" size="4" type="hidden" '.$disabled.' /></td>
         <td  colspan="" align="center" ><input id="td_padron_nombre" value="'.elimina_caracteres(htmlentities($padron_fetch['nombre'])).'" style=" background-color:'.$td_color.'" size="80" type="text" '.$disabled.' /></td>
         <td  width="" align="right"    ><input id="td_padron_edad" value="'.$edad.'" style=" background-color:'.$td_color.'" size="4" type="text"  '.$disabled.' /></td>
         <td  width="" align="right"    ><input id="td_padron_sexo" value="'.$padron_fetch['sexo'].'" style=" background-color:'.$td_color.'" size="3" type="text" '.$disabled.'  /></td>
-        <td  width="" align="right"    ><input id="td_padron_identi" value="'.elimina_caracteres(htmlentities($padron_fetch['identificacion'])).'" style=" background-color:'.$td_color.'" size="29" type="text" '.$disabled.' /></td>
+        <td  width="" align="right"    ><input id="td_padron_identi" value="'.elimina_caracteres(htmlentities($padron_fetch['nroafiliado'])).'" style=" background-color:'.$td_color.'" size="29" type="text" '.$disabled.' /></td>
         <td  width="" align="right"    ><input id="td_padron_docum" value="'.$padron_fetch['documento'].'" style=" background-color:'.$td_color.'" size="23" type="text" '.$disabled.' /></td>
      </tr>
      ';
@@ -314,37 +315,37 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
     case 1:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
          {
-          $consulta_padron=mysql_query ("SELECT * FROM padron WHERE idpadron ='".$dato."'
-                                         AND ( plan = '".ltrim($id_plan ,'0')."' OR plan = '".$id_plan."')");
+          $consulta_padron=mysql_query ("SELECT * FROM clientes WHERE id ='".$dato."'
+                                         AND ( convenio_id = '".ltrim($id_plan ,'0')."' OR convenio_id = '".$id_plan."')");
           $padron_fetch = mysql_fetch_array($consulta_padron);
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null; // edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 2:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
          {
-          $consulta_padron=mysql_query ("SELECT * FROM padron WHERE documento ='".$dato."'
-                                         AND ( plan = '".ltrim($id_plan ,'0')."' OR plan = '".$id_plan."')");
+          $consulta_padron=mysql_query ("SELECT * FROM clientes WHERE documento ='".$dato."'
+                                         AND ( convenio_id = '".ltrim($id_plan ,'0')."' OR convenio_id = '".$id_plan."')");
           $padron_fetch = mysql_fetch_array($consulta_padron);
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null; //edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 3:
         if (($dato <> ' ') && ($dato <> '') && ($dato <> null))
          {
-          $consulta_padron=mysql_query ("SELECT * FROM padron WHERE (nombre like '%".$dato."%' OR idpadron = '".$dato."')
-                                         AND ( plan = '".ltrim($id_plan ,'0')."' OR plan = '".$id_plan."')");
+          $consulta_padron=mysql_query ("SELECT * FROM clientes WHERE (nombre like '%".$dato."%' OR id = '".$dato."')
+                                         AND ( convenio_id = '".ltrim($id_plan ,'0')."' OR convenio_id = '".$id_plan."')");
           $padron_fetch = mysql_fetch_array($consulta_padron);
           if (mysql_affected_rows()==0)
            $edad = '&nbsp;';
           else
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null; // edad($padron_fetch['fnacimiento']);
          } else  $edad = ' ';
         break;
     case 4:
@@ -352,7 +353,7 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
          {
            $consulta_atencion_edit = mysql_query("select * from atenciones_temp where id=".$dato);
            $padron_fetch = mysql_fetch_array($consulta_atencion_edit);
-           $edad = edad($padron_fetch['fnacimiento']);
+           $edad = null; //edad($padron_fetch['fnacimiento']);
          }
         break;
 
@@ -433,7 +434,8 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
 function fun_alerta_zona ($id_zona)
  {
   global $path_imagenes_ruta;
-
+  $html_salida = null;
+  
   $consulta_zona = mysql_query("SELECT * FROM zonas WHERE idzonas = '".$id_zona."'");
   $fuera_zona=mysql_fetch_array($consulta_zona);
 
@@ -464,7 +466,7 @@ function func_lista_motivos ($idmotivo)
  while ($fila=mysql_fetch_array($consulta_motivos))
  {
   if (($fila['idmotivo'] == $ids['0']) && ($fila['idmotivo2'] == $ids['1']))
-    $html_salida.= '<option selected="selected" value="'.$fila['idmotivo'].''.$fila['idotivo2'].'" >'.$fila['desc'].'</option>';
+    $html_salida.= '<option selected="selected" value="'.$fila['idmotivo'].''.$fila['idmotivo2'].'" >'.$fila['desc'].'</option>';
   else
     $html_salida.= '<option value="'.$fila['idmotivo'].''.$fila['idmotivo2'].'" >'.$fila['desc'].'</option>';
  }
@@ -514,6 +516,7 @@ function lista_color($idcolor)
  global $path_imagenes_ruta;
  global $hora_tras;
  global $fechas_tras;
+ $td_color = null;
 
    // CALCULO DE FECHA Y DIA EN QUE SE MUESTRA EL TRASLADO EN PANTALLA
 
@@ -643,7 +646,7 @@ function agrega_emergencia_edit (
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("mensaje_agrega","innerHTML",$update_emergencia);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 
@@ -731,7 +734,7 @@ function agrega_emergencia_ctraslado_edit (
    //escribimos en la capa con id="respuesta" el texto que aparece en $salida
    $respuesta->addAssign("mensaje_agrega","innerHTML",$update_emergencia);
 
-   //tenemos que devolver la instanciación del objeto xajaxResponse
+   //tenemos que devolver la instanciaciï¿½n del objeto xajaxResponse
    return $respuesta;
 }
 //REGISTERRRRRRR
@@ -756,7 +759,7 @@ $html_salida = '
 <head>
 <?xml version="1.0" encoding="iso-8859-1"?>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<script defer type="text/javascript" src="jsfunciones.js"></script>
+<script defer type="text/javascript" src="js/jsfunciones.js"></script>
 <script language="JavaScript">
 
 function mueveReloj(){
