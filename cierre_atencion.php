@@ -1,28 +1,21 @@
 <?php
-//funciones propias
 
-//http://localhost/gn/cierre_atencion.php?id=5394
 include ('funciones.php');
-
-//archivo de configuracion
 include_once ('config.php');
-
-//incluímos la clase ajax
 require ('xajax/xajax.inc.php');
-
-//login usuario
 require_once ('cookie.php');
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// VARIABLES GLOBALES - DATOS DE USUARIO LOGON
+// Datos del usuario
 $cookie = new cookieClass;
 $G_usuario = $cookie->get("usuario");
 $G_legajo  = $cookie->get("legajo");
 $G_perfil  = $cookie->get("perfil");
 $G_funcion = $cookie->get("funcion");
-################### Conexion a la base de datos##########################
 
-################### Control de usuarios##########################
+// Def. de variables
+$_FILAVINC      = null;
+$load_xajax_noa = null;
+$plan_desc      = null;
 
 $segmenu = valida_menu();
 if ($segmenu <> "OK")
@@ -30,65 +23,62 @@ if ($segmenu <> "OK")
    exit;
   }
 
-
-//*  CONEXION A LA BASEDE DATOS
-
-$bd= mysql_connect($bd_host, $bd_user, $bd_pass);
-mysql_select_db($bd_database, $bd);
-
+// Conexion con la base
+conectar_db ($bd_host , $bd_database , $bd_user , $bd_pass);
 
 // recupero datos de la emergencia
 $idemergencia_temp = $_GET['id'];
 
 if (!$idemergencia_temp)
- die("-");
+    {
+        die('');
+    }    
 else
-{
-$consulta_atencion = mysql_query("select * from atenciones_temp where id=".$idemergencia_temp);
-$atencion_datos = mysql_fetch_array($consulta_atencion);
+    {
+        $consulta_atencion = mysql_query("select * from atenciones_temp where id=".$idemergencia_temp);
+        $atencion_datos = mysql_fetch_array($consulta_atencion);
 
-if (mysql_affected_rows () == 0)
-{
-$mensaje_error = '
-<html>
-<head>
-<script type="text/javascript">
+        if (mysql_affected_rows () == 0)
+        {
+            $mensaje_error = '
+                <html>
+                    <head>
+                        <script type="text/javascript">
+                        function load()
+                         {
+                          alert("EMERGENCIA YA CERRADA");
+                          window.close();
+                         }
+                        </script>
 
-function load()
- {
-  alert("EMERGENCIA YA CERRADA");
-  window.close();
- }
-</script>
+                    </head>
+                    <body onload="load()">
+                    </body>
+                </html>
+            ';
 
- </head>
-   <body onload="load()">
-</BODY>
-</HTML>
-';
+            echo $mensaje_error;
+            echo die('');
+        }
 
-echo $mensaje_error;
-echo die("");
-}
-//*
-$consulta_plan = mysql_query ("select * from planes where idplan=".$atencion_datos['plan']);
-$plan = mysql_fetch_array($consulta_plan);
+        $consulta_plan = mysql_query ("select * from convenios where id=".$atencion_datos['plan']);
+        $plan = mysql_fetch_array($consulta_plan);
 
-$consulta_receptor = mysql_query ("select * from legajos where legajo=".$atencion_datos['operec']);
-$receptor = mysql_fetch_array($consulta_receptor);
-$receptor_nombre= explode(",",$receptor['apeynomb']);
+        $consulta_receptor = mysql_query ("select * from legajos where legajo=".$atencion_datos['operec']);
+        $receptor = mysql_fetch_array($consulta_receptor);
+        $receptor_nombre= explode(",",$receptor['apeynomb']);
 
-if ($atencion_datos['opedesp'] != null)
- {
-  $consulta_ope_desp_nombre = mysql_query("select * from legajos where legajo=".$atencion_datos['opedesp']);
-  $opedesp_nombre = mysql_fetch_array($consulta_ope_desp_nombre);
-  $opedesp_nombre = $opedesp_nombre['apeynomb'];
- }
-else $opedesp_nombre="";
+        if ($atencion_datos['opedesp'] != null)
+         {
+          $consulta_ope_desp_nombre = mysql_query("select * from legajos where legajo=".$atencion_datos['opedesp']);
+          $opedesp_nombre = mysql_fetch_array($consulta_ope_desp_nombre);
+          $opedesp_nombre = $opedesp_nombre['apeynomb'];
+         }
+        else $opedesp_nombre="";
 
 if ($atencion_datos['plan'] != null)
  {
-  $consulta_plan_desc = mysql_query("select * from planes where idplan=".$atencion_datos['plan']);
+  $consulta_plan_desc = mysql_query("select * , 'S/D' as datos from convenios where id =".$atencion_datos['plan']);
   $plan_desc = mysql_fetch_array($consulta_plan_desc);
   $plan_desc = $plan_desc['datos'];
  }
@@ -109,7 +99,7 @@ $cantidad_vinculados = mysql_affected_rows();
 if ($atencion_datos['color'] == 3 || $atencion_datos['color'] == 5)
 {
 
- $busca_imp_coseguro = mysql_fetch_array(mysql_query ("select * from planes where idplan = ".$atencion_datos['plan'] ));
+ $busca_imp_coseguro = mysql_fetch_array(mysql_query ("select * from convenios where id = ".$atencion_datos['plan'] ));
  $importe_mostrar = ($busca_imp_coseguro['impcoseguro'] * $cantidad_vinculados) + $busca_imp_coseguro['impcoseguro'];
  //$chekco_t ='document.formulario.cosegurosi.checked=true';
  //$chekco_f ='document.formulario.cosegurosi.checked=false';
@@ -235,8 +225,7 @@ $xajax = new xajax();
 function lista_planes ($idplan)
 {
 
-    $consulta_planes = mysql_query ("SELECT idplan , descplan , datos
-                                    FROM planes WHERE estado <> 'B'");
+    $consulta_planes = mysql_query ("SELECT id , descripcion , 'S/D' as datos FROM convenios");
 
      $list='<select name="s_lista_planes" onchange="xajax_input_busca_plan(document.formulario.s_lista_planes.value);">';
 
@@ -246,10 +235,10 @@ function lista_planes ($idplan)
 
      while ($fila=mysql_fetch_array($consulta_planes))
      {
-      if ($idplan == $fila['idplan'])
-      $list.= '<option selected="selected" value="'.$fila['idplan'].'">'.elimina_caracteres(htmlentities($fila['descplan'])).'</option>';
+      if ($idplan == $fila['id'])
+      $list.= '<option selected="selected" value="'.$fila['id'].'">'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
       else
-       $list.= '<option value="'.$fila['idplan'].'">'.elimina_caracteres(htmlentities($fila['descplan'])).'</option>';
+       $list.= '<option value="'.$fila['id'].'">'.elimina_caracteres(htmlentities($fila['descripcion'])).'</option>';
      }
 
    $list.='</select>';
@@ -366,8 +355,6 @@ function lista_color($idcolor)
                                       FROM colores");
 
      $list='<select name="s_lista_color" onchange="xajax_input_busca_color(document.formulario.s_lista_color.value);">';
-
-     if ($iddestino == 0)
      $list.='<option selected="selected" value="A">COLOR</option>';
 
      while ($fila=mysql_fetch_array($consulta_color))
@@ -858,7 +845,7 @@ $xajax->processRequests();
 $html_salida = '
 <html>
  <head>
-    <script defer type="text/javascript" src="jsfunciones.js"></script>
+    <script defer type="text/javascript" src="js/jsfunciones.js"></script>
     <style type="text/css">
     <!--
     .style1 {
@@ -909,9 +896,9 @@ $html_salida = '
 	
    function load_func() {
    
-   xajax_lista_planes('.$plan['idplan'].');
+   xajax_lista_planes('.$plan['id'].');
    xajax_lista_diagnostico(-1);
-   xajax_input_busca_plan('.$plan['idplan'].');
+   xajax_input_busca_plan('.$plan['id'].');
    xajax_input_busca_diagnostico(0);
    xajax_lista_destino(1);
    xajax_input_busca_destino(1);
@@ -1063,7 +1050,7 @@ $html_salida = '
    <td valign="top">
    <table width="400" border="0"  align="right" style = "font-size:'.$fontdef.'">
     <tr>
-      <td colspan=2 align="left">Coseguro</td><td>N° de Recibo</td>
+      <td colspan=2 align="left">Coseguro</td><td>No. de Recibo</td>
     <tr>
     <tr>
       <td>
