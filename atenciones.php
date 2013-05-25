@@ -824,7 +824,7 @@ $html_salida = '
   </tr>
   <tr>
     <td width="6%" height="30" align="">Plan</td>
-    <td width="3%" colspan=3><input size = 55 type="text" disabled="disabled" value="'.$plan['idplan'].'&nbsp;&nbsp;-&nbsp;&nbsp;'.elimina_caracteres(htmlentities($plan['descplan'])).'" /></td>
+    <td width="3%" colspan=3><input size = 55 type="text" disabled="disabled" value="'.$plan['id'].'&nbsp;&nbsp;-&nbsp;&nbsp;'.elimina_caracteres(htmlentities($plan['descripcion'])).'" /></td>
     <td width="4%" colspan=2 >Ident.</td>
     <td width="4%" colspan=3 ><input size = 20 type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($atencion_datos['identificacion'])).'" /></td>
     <td width="4%" colspan=1 >Barrio</td>
