@@ -75,7 +75,6 @@ for ($c=0 ; $c <= $cantidad_vinculos ; $c++)
 $xajax = new xajax();
 $xajax->setCharEncoding('ISO-8859-1');
 $xajax->decodeUTF8InputOn() ;
-// funciones para la libreria
 
 function func_lista_planes ($id_plan)
 {
@@ -121,6 +120,7 @@ function func_lista_planes ($id_plan)
                             }
                        }
              }
+             
        if ($band==1)
        $html_salida.='<option value="0" selected="selected">Lista de Planes</option>';
 
@@ -129,8 +129,10 @@ function func_lista_planes ($id_plan)
 
    $salida = $html_salida;
    $respuesta = new xajaxResponse();
+   
    $respuesta->addAssign("s_lista_planes","innerHTML",$salida);
    $respuesta->addAssign("div_muestra_textarea","innerHTML",$textarea);
+   $respuesta->addAssign("i_busca_plan","value",$id_plan);
    
    return $respuesta;
 }
@@ -151,7 +153,7 @@ function func_datos_padron ($id_plan , $dato , $filtro)
 {
  global $td_color;
  $disabled    = null; 
-
+ $padron_fetch = null;
 
  switch ($filtro) {
     case 1:
@@ -380,31 +382,31 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
 
 
  $html_salida = '
-                 <table border="0" align="center" width="1000">
+                 <table border="1">
                   <tr>
-                    <td width="24%" align="center" style=" background-color:'.$td_color.'">Calle</td>
-                    <td width="5%" align="center"  style=" background-color:'.$td_color.'">Nro</td>
-                    <td width="5%" align="center"  style=" background-color:'.$td_color.'">Piso</td>
-                    <td width="5%" align="center"  style=" background-color:'.$td_color.'">Dpto.</td>
-                    <td width="6%" align="center"  style=" background-color:'.$td_color.'">Casa</td>
-                    <td width="6%" align="center"  style=" background-color:'.$td_color.'">Mon</td>
-                    <td width="45%" align="center"  style=" background-color:'.$td_color.'">Referencia</td>
+                    <td width="24%">Calle</td>
+                    <td width="5%">Nro</td>
+                    <td width="5%">Piso</td>
+                    <td width="5%">Dpto.</td>
+                    <td width="6%">Casa</td>
+                    <td width="6%">Mon</td>
+                    <td width="45%">Referencia</td>
                   </tr>
                   <tr>
-                    <td style="background-color:#CCCCCC"><input value="'.elimina_caracteres(htmlentities($padron_fetch['calle'])).'" type="text"    id="td_padron_calle" size="40"/></td>
-                    <td style="background-color:#CCCCCC"><input value="'.elimina_caracteres(htmlentities($padron_fetch['numero'])).'" type="text"   id="td_padron_nro" size="10%"/></td>
-                    <td style="background-color:#CCCCCC"><input value="'.elimina_caracteres(htmlentities($padron_fetch['piso'])).'" type="text"     id="td_padron_piso" size="10%"/></td>
-                    <td style="background-color:#CCCCCC"><input value="'.elimina_caracteres(htmlentities($padron_fetch['depto'])).'" type="text"    id="td_padron_depto" size="10%"/></td>
-                    <td style="background-color:#CCCCCC"><input value="'.elimina_caracteres(htmlentities($padron_fetch['casa'])).'" type="text"     id="td_padron_casa" size="10%"/></td>
-                    <td style="background-color:#CCCCCC"><input value="'.elimina_caracteres(htmlentities($padron_fetch['monoblok'])).'" type="text" id="td_padron_mon" size="10%"/></td>
-                    <td style="background-color:#CCCCCC"><input  type="text" name="referencia" size="40"/></td>
+                    <td><input value="'.elimina_caracteres(htmlentities($padron_fetch['calle'])).'" type="text"    id="td_padron_calle" size="40"/></td>
+                    <td><input value="'.elimina_caracteres(htmlentities($padron_fetch['numero'])).'" type="text"   id="td_padron_nro" size="10%"/></td>
+                    <td><input value="'.elimina_caracteres(htmlentities($padron_fetch['piso'])).'" type="text"     id="td_padron_piso" size="10%"/></td>
+                    <td><input value="'.elimina_caracteres(htmlentities($padron_fetch['depto'])).'" type="text"    id="td_padron_depto" size="10%"/></td>
+                    <td><input value="'.elimina_caracteres(htmlentities($padron_fetch['casa'])).'" type="text"     id="td_padron_casa" size="10%"/></td>
+                    <td><input value="'.elimina_caracteres(htmlentities($padron_fetch['monoblok'])).'" type="text" id="td_padron_mon" size="10%"/></td>
+                    <td><input  type="text" name="referencia" size="40"/></td>
                     <td>&nbsp;</td>
                   </tr>
                   </table>
-                  <table border="0" align="center" width="1000">
+                  <table border="1">
                   <tr>
-                   <td align="center" style=" background-color:'.$td_color.'">Barrio</td>
-                   <td align="center" style=" background-color:'.$td_color.'" colspan="4">Entre</td>
+                   <td>Barrio</td>
+                   <td colspan="4">Entre</td>
                   </tr>
                   <tr>
                    <td><input id="td_padron_barrio" type="text" value="'.elimina_caracteres(htmlentities($padron_fetch['barrio'])).'" size="60"></td>
@@ -412,10 +414,10 @@ function func_datos_domicilio ($id_plan , $dato , $filtro)
                    <td><input id="td_padron_entre2" type="text" value="'.elimina_caracteres(htmlentities($padron_fetch['entre2'])).'" size="40"></td>
                   </tr>
                  </table>
-                 <table border="0" align="center" width="600">
+                 <table border="1">
                   <tr>
-                    <td width="180" style=" background-color:'.$td_color.'" align="center" >Localidad</td>
-                    <td width="780" colspan="" style=" background-color:'.$td_color.'" align="center" >Zona</td>
+                    <td>Localidad</td>
+                    <td>Zona</td>
                   </tr>
                   <tr>
                     <td width=""><input id="td_padron_localidad" value="'.elimina_caracteres(htmlentities($padron_fetch['localidad'])).'" type="text" size="50"/></td>
@@ -792,37 +794,34 @@ function on_Load()
 <title>Modulo para alta de Emergencias</title>
    '.$xajax->printJavascript("xajax/").'
 </head>
-<body style="background-color:'.$body_color.'" onLoad="on_Load();">
+<body onLoad="on_Load();">
 '.titulo_encabezado_2 ('Editar Emergencia' , $path_imagen_logo).'
 <form id="formulario" name="formulario" >
-<table width="97%" style="background-color:$body_color" align="center">
+<table border="1">
   <tr>
-    <td width="25%"  colspan="2" align="center" style=" background-color:'.$td_color.'">Datos Receptor</td>
-    <td width="15%"  align="center" style=" background-color:'.$td_color.'">Fecha</td>
-    <td width="15%"  align="center" style=" background-color:'.$td_color.'">Hora</td>
-    <td width="12%"  align="center" style=" background-color:'.$td_color.'">Hora Llamado </td>
+    <td width="25%" colspan="2">Datos Receptor</td>
+    <td width="15%">Hora</td>
+    <td width="12%">Hora Llamado</td>
   </tr>
   <tr>
-    <td width="4%"  align="center" style="background-color:'.$td_color.'">'.$id_ate_edit.'</td>
-    <td width="21%" style="background-color:'.$td_color.'" align="center">'.elimina_caracteres(htmlentities($G_usuario)).'</td>
-    <td width="15%" style="background-color:'.$td_color.'" align="center"><input style="background-color:'.$td_color.'" type="text" id="muestra_fecha" value="'.$atencion_datos_edit['fecha'].'" /></td>
-    <td width="15%" style="background-color:'.$td_color.'" align="center"><input style="background-color:'.$td_color.'" type="text" name="reloj" size="8"></td>
-    <td width="7%"  style="background-color:'.$td_color.'" align="center"><input style="background-color:'.$td_color.'" type="text" id="hora" value="'.$atencion_datos_edit['horallam'].'" /></td>
+    <td width="4%">'.$id_ate_edit.'</td>
+    <td width="21%">'.elimina_caracteres(htmlentities($G_usuario)).'</td>
+    <td width="15%"><input type="text" name="reloj" size="8"></td>
+    <td width="7%"><input type="text" id="hora" value="'.$atencion_datos_edit['horallam'].'" /></td>
   </tr>
 </table>
-<table align="center" width="800">
- <tr>
-    <td width="10%" align="center" style=" background-color:'.$td_color.'">Telefono</td>
 
-    <td width="15%"  colspan="2" align="center" style=" background-color:'.$td_color.'">Planes</td>
-    <td width="30%"  colspan="2" align="center" style=" background-color:'.$td_color.'">Filtros de busqueda</td>
+<table border="1" width="800">
+ <tr>
+    <td width="10%">Telefono</td>
+    <td width="15%" colspan="2">Planes</td>
+    <td width="30%" colspan="2">Filtros de busqueda</td>
  </tr>
  <tr>
-   <td width=""  colspan="" align="center" style=""><input type="text" id="telefono" value="'.$atencion_datos_edit['telefono'].'"/></td>
-
-   <td width=""  colspan="" align="center" style=""><div id="i_lista_planes"></div></td>
-   <td width=""  colspan="" align="center" style=""><div id="s_lista_planes"></div></td>
-   <td width=""  colspan="" align="center" style="">
+   <td><input type="text" id="telefono" value="'.$atencion_datos_edit['telefono'].'"/></td>
+   <td><div id="i_lista_planes"></div></td>
+   <td><div id="s_lista_planes"></div></td>
+   <td>
     <input type="text" size="15" id="i_busca_padron"
      onKeyUp="xajax_func_datos_padron(document.formulario.i_busca_plan.value,
                                       document.formulario.i_busca_padron.value,
@@ -832,7 +831,7 @@ function on_Load()
                                       document.formulario.s_filtro_busqueda.value);
                                       "/>
    </td>
-   <td width=""  colspan="" align="center" style="">
+   <td>
     <select name="s_filtro_busqueda"
         onchange="xajax_func_datos_padron(document.formulario.i_busca_plan.value,
                                           document.formulario.i_busca_padron.value,
@@ -849,52 +848,45 @@ function on_Load()
  </tr>
 </table>
 
-<table border="0" width="850" align="center" style="font-size:'.$fontdef.'">
+<table border="1">
  <tr>
-  <td colspan="" align="center" style="background-color:'.$td_color.'">Motivo del llamado</td>
-  <td colspan=""><div id="i_busca_motivos"></div></td>
-  <td colspan=""><div id="div_lista_motivos"></div></td>
-  <td colspan=""><div id="div_pre_arribo"></div></td>
-  <td colspan=""><div id="div_lista_colores"></div></td>
-  <td colspan=""><div id="div_muestra_foquito"></div></td>
-  <td colspan=""><div id="div_traslado"></div></td>
+  <td>Motivo del llamado</td>
+  <td><div id="i_busca_motivos"></div></td>
+  <td><div id="div_lista_motivos"></div></td>
+  <td><div id="div_pre_arribo"></div></td>
+  <td><div id="div_lista_colores"></div></td>
+  <td><div id="div_muestra_foquito"></div></td>
+  <td><div id="div_traslado"></div></td>
  </tr>
 </table>
 
-
-DOMICILIO
-
-<table border="0" bordercolor="#FFFFFF" align="center" width="996" valign="top" style="font-size:'.$fontdef.'">
+<table border="1">
   <tr><div id="td_datos_domicilio"></div></tr>
 </table>
 
-PACIENTE
-
-<table border="0" bordercolor="#FFFFFF" align="center" width="996" valign="top" style="font-size:'.$fontdef.'">
+<table border="1">
  <tr>
-    <td colspan="3" align="center" style="background-color:'.$td_color.'">Socio</td>
-    <td width="5%" align="center" style="background-color:'.$td_color.'">Edad</td>
-    <td width="5%" align="center" style="background-color:'.$td_color.'">Sexo</td>
-    <td width="20%" align="center" style="background-color:'.$td_color.'">Identificacion</td>
-    <td width="18%" align="center" style="background-color:'.$td_color.'">Documento</td>
+    <td colspan="3">Socio</td>
+    <td width="5%">Edad</td>
+    <td width="5%">Sexo</td>
+    <td width="20%">Identificacion</td>
+    <td width="18%">Documento</td>
  </tr>
  <tr>
   <td colspan="8"><div id="td_datos_padron"></div>
  </tr>
  </table>
 
- ADICIONALES
-
- <table  border="1" bordercolor="#FFFFFF" align="center" width="996" height="100">
- <tr>
- <td ALIGN="CENTER" colspan="8" valign="top">
-  <div class="barra_3">
- <table BORDER="0" align="center" valign="top">
- '.$_FILAVINC.'
- </table>
- </div>
- </td>
- </tr>
+ <table  border="1">
+  <tr>
+    <td colspan="8" valign="top">
+        <div class="barra_3">
+            <table border="1" valign="top">
+                '.$_FILAVINC.'
+            </table>
+        </div>
+    </td>
+  </tr>
 </table>
 
 <br>
