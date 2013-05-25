@@ -608,7 +608,7 @@ if (($idemergencia_temp <> null))
         $atencion_datos = mysql_fetch_array($consulta_atencion);
         $consulta_zona = mysql_query ("select * from zonas where idzonas= '".$atencion_datos['zona']."'");
         $zona = mysql_fetch_array($consulta_zona);
-        $consulta_plan = mysql_query ("select * from planes where idplan= '".$atencion_datos['plan']."'");
+        $consulta_plan = mysql_query ("select * from convenios where id = '".$atencion_datos['plan']."'");
         $plan = mysql_fetch_array($consulta_plan);
         $consulta_receptor = mysql_query ("select * from legajos where legajo=".$atencion_datos['operec']);
         $receptor = mysql_fetch_array($consulta_receptor);
@@ -630,10 +630,10 @@ if (($idemergencia_temp <> null))
 
         if ($atencion_datos['plan'] != null)
          {
-          $consulta_plan_desc = mysql_query("select * from planes where idplan= '".$atencion_datos['plan']."'");
+          $consulta_plan_desc = mysql_query("select * from convenios where id= '".$atencion_datos['plan']."'");
           $plan_desc = mysql_fetch_array($consulta_plan_desc);
-          $plan_desc_1 = $plan_desc['descplan'];
-          $plan_desc = $plan_desc['datos'];
+          $plan_desc_1 = $plan_desc['descripcion'];
+          $plan_desc = $plan_desc['descripcion'];
          }
         else {
                $plan_desc="&nbsp;";
