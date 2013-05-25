@@ -126,8 +126,8 @@ while ($fila=mysql_fetch_array($consulta)){
    }else $zona_desc="&nbsp;";
 
     $desc_plan =  mysql_fetch_array(mysql_query ("SELECT *
-                               FROM planes
-                               WHERE idplan ='".$fila['plan']."'")); //idplan - descplan
+                               FROM convenios
+                               WHERE id ='".$fila['plan']."'")); //idplan - descplan
 
  if ($fila['id'] == $idemergencia_temp_11)
   {
@@ -173,7 +173,7 @@ while ($fila=mysql_fetch_array($consulta)){
                    '.htmlentities($zona_desc).'
                   </td>
                   <td >
-                   '.htmlentities($desc_plan['descabrev']).'
+                   '.htmlentities($desc_plan['descripcion']).'
                   </td>
                   <td  valign="" align="center" style="background-color:'.$ascii['codigo_ascii'].'" style="font-size:11px">
                    '.$fila['abierta'].'&nbsp
