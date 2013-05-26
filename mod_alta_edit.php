@@ -790,7 +790,8 @@ function on_Load()
  xajax_lista_color('.$atencion_datos_edit['color'].');
 }
 </script>
-<link href="estilos.css" rel="stylesheet" type="text/css" />
+    <link href="css/sem.css" type="text/css" rel="stylesheet">
+    <link href="css/estilos.css" rel="stylesheet" type="text/css" />
 <title>Modulo para alta de Emergencias</title>
    '.$xajax->printJavascript("xajax/").'
 </head>
@@ -899,14 +900,14 @@ function on_Load()
 
     <input  type="button" value="Editar Emergencia"
     onclick=" check_emergencia_edit(
-           document.formulario.muestra_fecha.value,document.formulario.telefono.value,
+           '."'".date("d.m.Y")."'".',document.formulario.telefono.value,
            document.formulario.i_busca_plan.value,document.formulario.hora.value,
            document.formulario.td_padron_idpadron.value,document.formulario.td_padron_nombre.value,
            document.formulario.td_padron_tiposocio.value,document.formulario.td_padron_edad.value,
-           document.formulario.td_padron_sexo.value,document.formulario.td_padron_identi.value,
+           document.formulario.td_padron_sexo.value,0,
            document.formulario.td_padron_docum.value,document.formulario.td_padron_calle.value,
            document.formulario.td_padron_nro.value,document.formulario.td_padron_piso.value,
-           document.formulario.td_padron_depto.value,document.formulario.td_padron_casa.value,
+           document.formulario.td_padron_depto.value,0,
            document.formulario.td_padron_mon.value,document.formulario.td_padron_barrio.value,
            document.formulario.td_padron_entre1.value,document.formulario.td_padron_entre2.value,
            document.formulario.td_padron_localidad.value,document.formulario.referencia.value,
