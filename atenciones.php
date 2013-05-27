@@ -708,13 +708,13 @@ if (($idemergencia_temp <> null))
 $html_salida = '
 <html>
  <head>
-    
-        '.$xajax->printJavascript("xajax/").'
 
-        <link href="css/sem.css" type="text/css" rel="stylesheet">
-        <link href="css/estilos.css" rel="stylesheet" type="text/css" />
-        <script defer type="text/javascript" src="js/jsfunciones.js"></script>
-        
+       <link rel="stylesheet/less" type="text/css" href="css/variables.less" />  
+       <link rel="stylesheet/less" type="text/css" href="css/estilos.less" />       
+       <script type="text/javascript" src="js/less.js"></script>
+
+        '.$xajax->printJavascript("xajax/").'
+       
         <script>
         
             function load_cierre()
@@ -799,14 +799,18 @@ $html_salida = '
         </script>
     
  </head>
- <body onload="func_onload();" >
-    '.titulo_encabezado_solo('Despacho',$path_imagen_logo).'
- <table border="0">
+ 
+ <body onload="func_onload();">
+ 
+ <table>
+   <tr> 
     <td colspan=9>
-        <a href="mod_alta.php" target="_blank"> ALTA EMERGENCIA</a>
+        <a class="btn btn-primary" href="mod_alta.php" target="_blank"> ALTA EMERGENCIA </a>
     </td>
- </table>
-<table border="1">
+   <tr> 
+</table>
+ 
+<table>
   <tr>    
     <td width="6%"  height="30">Socio</td>
     <td width="3%"  ><input size = 30 type="text" disabled="disabled" value="'.$idemergencia_temp.'&nbsp;-&nbsp;'.elimina_caracteres(htmlentities($atencion_datos['nombre'])).'" /></td>
@@ -1054,8 +1058,7 @@ $html_salida = '
 
        <div id="update"></div>
        <div>
-       <textarea type="text" name="notas" rows="20"  align="left" style="width:100%">
-       '.$plan_desc.'
+       <textarea class="input-xlarge" type="text" name="notas" rows="20"  align="left" style="width:100%">
 
        *********************************       Informaci�n personal del cliente.        *********************************
 
