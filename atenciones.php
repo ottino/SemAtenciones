@@ -70,13 +70,13 @@ function refresca_moviles () {
     $vector_md= '<td>
                   <select name="moviles_disp" 
                    onchange="xajax_refresca_equipo(document.formulario.moviles_disp.value);oncli ();">
-                   <option value="0" selected="selected">&nbsp;DISPONIBLES</option>';
+                   <option value="0" selected="selected">Disponibles</option>';
     while ($fila=mysql_fetch_array($consulta_movil_disponilbe))
     $vector_md.= '<option value="'.$fila['idmovildisp'].'-'.$fila['idemovila'].'">'
                   .$fila['idemovila'].'&nbsp;-&nbsp;'.substr($fila['descmovil'],0,17).'</option>';
 
 
-    $vector_md.= '<option value="DESASIGNAR" >&nbsp;DESASIGNAR</option>';
+    $vector_md.= '<option value="DESASIGNAR">Desasignar</option>';
     $vector_md.= '</select></td>';
 
     $salida = $vector_md;
@@ -167,6 +167,7 @@ function refresca_equipo($idmovildisp) {
 
 function asigna_movil($idatencion_temp,$idmovildisp) {
    $hora_cero = 0;
+   $G_usuario = null;
    if ($idmovildisp == 'DESASIGNAR')
    {
     $CONSULTA_MOVIL =mysql_fetch_array( mysql_query ("select * from atenciones_temp where id = ".$idatencion_temp) );
@@ -709,9 +710,9 @@ $html_salida = '
 <html>
  <head>
 
-       <link rel="stylesheet/less" type="text/css" href="css/variables.less" />  
        <link rel="stylesheet/less" type="text/css" href="css/estilos.less" />       
        <script type="text/javascript" src="js/less.js"></script>
+       <script type="text/javascript" src="js/jsfunciones.js"></script>
 
         '.$xajax->printJavascript("xajax/").'
        
@@ -805,185 +806,181 @@ $html_salida = '
  <table>
    <tr> 
     <td colspan=9>
-        <a class="btn btn-primary" href="mod_alta.php" target="_blank"> ALTA EMERGENCIA </a>
+        <a href="mod_alta.php" target="_blank"> ALTA EMERGENCIA </a>
     </td>
    <tr> 
 </table>
  
-<table>
+<table class="info_socio">
   <tr>    
-    <td width="6%"  height="30">Socio</td>
-    <td width="3%"  ><input size = 30 type="text" disabled="disabled" value="'.$idemergencia_temp.'&nbsp;-&nbsp;'.elimina_caracteres(htmlentities($atencion_datos['nombre'])).'" /></td>
-    <td width="2%"  >Edad</td>
-    <td width="2%"  ><input size = 2 type="text" disabled="disabled" value="'.$atencion_datos['edad'].'" /></td>
-    <td width="4%"  >Sexo</td>
-    <td width="1%"  ><input size = 1 type="text" disabled="disabled" value="'.$atencion_datos['sexo'].'" /></td>
-    <td width="3%"  >Tel</td>
-    <td width="5%"  ><input size = 15 type="text" disabled="disabled" value="'.$atencion_datos['telefono'].'" /></td>
-    <td width="4%"  >Zona</td>
-    <td width="3%"  ><input size = 7 type="text" disabled="disabled" value="'.$zona['idzonas'].'" /></td>
-    <td width="1%"  ><input size = 1 type="text" disabled="disabled" value="'.$zona['fuerazona'].'" /></td>
-    <td>
-        <input size="30" type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($zona['desczonas'])).'" /></td>
+    <td>Socio</td>
+    <td><input size = 30 type="text" disabled="disabled" value="'.$idemergencia_temp.'&nbsp;-&nbsp;'.elimina_caracteres(htmlentities($atencion_datos['nombre'])).'" /></td>
+    <td>Edad</td>
+    <td><input size = 2 type="text" disabled="disabled" value="'.$atencion_datos['edad'].'" /></td>
+    <td>Sexo</td>
+    <td><input size = 1 type="text" disabled="disabled" value="'.$atencion_datos['sexo'].'" /></td>
+    <td>Tel</td>
+    <td><input size = 15 type="text" disabled="disabled" value="'.$atencion_datos['telefono'].'" /></td>
+    <td>Zona</td>
+    <td><input size = 7 type="text" disabled="disabled" value="'.$zona['idzonas'].'" /></td>
+    <td><input size = 1 type="text" disabled="disabled" value="'.$zona['fuerazona'].'" /></td>
+    <td><input size="30" type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($zona['desczonas'])).'" /></td>
   </tr>
+  
   <tr>
-    <td width="6%" height="30" align="">Plan</td>
-    <td width="3%" colspan=3><input size = 55 type="text" disabled="disabled" value="'.$plan['id'].'&nbsp;&nbsp;-&nbsp;&nbsp;'.elimina_caracteres(htmlentities($plan['descripcion'])).'" /></td>
-    <td width="4%" colspan=2 >Ident.</td>
-    <td width="4%" colspan=3 ><input size = 20 type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($atencion_datos['identificacion'])).'" /></td>
-    <td width="4%" colspan=1 >Barrio</td>
-    <td width="4%" colspan=2 ><input size = 40 type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($atencion_datos['barrio'])).'" /></td>
+    <td height="30" align="">Plan</td>
+    <td colspan=3><input size = 55 type="text" disabled="disabled" value="'.$plan['id'].'&nbsp;&nbsp;-&nbsp;&nbsp;'.elimina_caracteres(htmlentities($plan['descripcion'])).'" /></td>
+    <td colspan=2 >Ident.</td>
+    <td colspan=3 ><input size = 20 type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($atencion_datos['identificacion'])).'" /></td>
+    <td colspan=1 >Barrio</td>
+    <td colspan=2 ><input size = 40 type="text" disabled="disabled" value="'.elimina_caracteres(htmlentities($atencion_datos['barrio'])).'" /></td>
   </tr>
+  
   <tr>
-   <td colspan="9">
+   <td colspan="10">
     <img src="imagenes/241.ico" width="16" height="15" />&nbsp;En Línea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
-    PENDIENTES ('.($cantidad_traslados_pendi['CANTIDAD'] + $cantidad_eventos_pendi['CANTIDAD']).'): Traslados '.$cantidad_traslados_pendi['CANTIDAD'].'  Eventos '.$cantidad_eventos_pendi['CANTIDAD'].'
-    DETALLE  <img style="CURSOR:pointer" src="imagenes/Alert 01.ico" width="16" height="16" onClick="window.open(\'popup_traslados_pendi.php\',\'ANULACIONES\', \'width=1200,height=700,scrollbars=yes\');"/>
+    Pendientes ('.($cantidad_traslados_pendi['CANTIDAD'] + $cantidad_eventos_pendi['CANTIDAD']).'): Traslados '.$cantidad_traslados_pendi['CANTIDAD'].'  Eventos '.$cantidad_eventos_pendi['CANTIDAD'].'
+    Detalle  <img style="CURSOR:pointer" src="imagenes/Alert 01.ico" width="16" height="16" onClick="window.open(\'popup_traslados_pendi.php\',\'ANULACIONES\', \'width=1200,height=700,scrollbars=yes\');"/>
    </td>
-   <td colspan="3">
+   
+   <td colspan="2">
+    <table class="tb_ordenar">
+     <tr>
+       <form method="post" action="atenciones.php">
+         <td>
+           <label onclick="this.form.submit();" style="cursor:pointer;">
+                Id
+                <input type="hidden" name="id_ordenar" />
+                <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
+           </label>
+         </td>
+       </form>
+       
+       <form method="post" action="atenciones.php">
+        <td>
+            <label onclick="this.form.submit();" style="CURSOR: pointer">
+                Zona
+                <input type="hidden" name="id_ordenar" value="2" />
+                <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
+            </label>
+        </td>
+       </form>
+   
+       <form method="post" action="atenciones.php">
+        <td>
+            <label onclick="this.form.submit();" style="CURSOR: pointer">
+                Plan
+                <input type="hidden" name="id_ordenar" value="4" />
+                <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
+            </label>
+        </td>
+       </form>
 
-    <table border="1">
-    <tr>
-
-    <td>
-        <b>Ordenar</b>
-    </td>
-
-   <form method="POST" action="atenciones.php">
-    <td >
-      <label onclick="this.form.submit();" style="cursor:pointer;">
-      ID
-      <input type="hidden" name="id_ordenar" value="1" />
-      <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
-      </label>
-    </td>
-
-    </form>
-    <form method="POST" action="atenciones.php">
-    <td >
-     <label onclick="this.form.submit();" style="CURSOR: pointer">
-      Zona
-      <input type="hidden" name="id_ordenar" value="2" />
-      <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
-      </label>
-    </td>
-
-   </form>
-     <form method="POST" action="atenciones.php">
-    <td >
-     <label onclick="this.form.submit();" style="CURSOR: pointer">
-      Plan
-      <input type="hidden" name="id_ordenar" value="4" />
-      <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
-      </label>
-    </td>
-	</form>
-
-    <form method="POST" action="atenciones.php">
-    <td>
-     <label onclick="this.form.submit();" style="CURSOR: pointer">
-      Movil
-      <input type="hidden" name="id_ordenar" value="3" />
-      <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
-      </label>
-    </td>
-
-    </form>
+       <form method="post" action="atenciones.php">
+        <td>
+            <label onclick="this.form.submit();" style="CURSOR: pointer">
+                Movil
+                <input type="hidden" name="id_ordenar" value="3" />
+                <input type="hidden" name="id_atencion_temp" value="'.$idemergencia_temp.'" />
+            </label>
+        </td>
+       </form>
    </tr>
-
   </table>
-
-  </td>
-  </tr>
-
+ </td>
+</tr>
 </table>
-<table border="1" >
-<tr>
- <td valign="top">
-     <form name="formulario">
- <table   border="1"  style="border:inherit ; ">
-  <tr>
-    <input type="hidden" name="reloj" size="8">
-        <th colspan="2" >Moviles</th></tr>
-    <tr>
-    <td width="25%"><div id="muestra_moviles"></div></td>
-    <td align="center" style="CURSOR: pointer">
-      <input type="hidden" name="imagen" id="imagen" value="imagen" onclick="check_movil('.$idemergencia_temp.',
-                                formulario.moviles_disp.value,
-                                '.$atencion_datos['movil'].');" />
-    <tr></tr><tr></tr><tr></tr></td>
-    </form></table>
-  <table  width="100%" border="0"  style="border:inherit ; " border="1">
-  </tr>
-  <tr>
-    <td>Llamado</td>
-    <td>'.$atencion_datos['horallam'].'&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Pase a Despacho</td>
-    <td><div id="muestra_pasedespacho">'.$atencion_datos['horadesp'].'</div></td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>Demora</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Salida Base</td>
-    <td><div id="muestra_salida_base">'.$atencion_datos['horasalbase'].'</div></td>
-    <td>
-     <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida base\'
-          onclick="xajax_control_salida_base('.$idemergencia_temp.')"/>
-    </td>
-  </tr>
-  <tr>
-    <td>Lleg. Domicilio</td>
-    <td><div id="muestra_llegada_dom">'.$atencion_datos['horallegdom'].'</div></td>
-    <td>
-        <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar llegada domicilio\'
-          onclick="xajax_control_llegada_dom('.$idemergencia_temp.')"/>
-    </td>
-  </tr>
-  <tr>
-    <td>Salida Domicilio</td>
-    <td><div id="muestra_salida_dom">'.$atencion_datos['horasaldom'].'</div></td>
-    <td>
-       <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida domicilio\'
-          onclick="xajax_control_salida_dom('.$idemergencia_temp.')"/>
-    </td>
-  </tr>
-  <tr>
-    <td>Lleg Hospital</td>
-    <td><div id="muestra_llegada_hosp">'.$atencion_datos['horalleghosp'].'</div></td>
-    <td>
-           <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar llegada hospital\'
-          onclick="xajax_control_llegada_hosp('.$idemergencia_temp.')"/>
-    </td>
-  </tr>
-  <tr>
-    <td>Salida Hospital</td>
-    <td><div id="muestra_salida_hosp">'.$atencion_datos['horasalhosp'].'</div></td>
-    <td>
-           <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida hospital\'
-          onclick="xajax_control_salida_hosp('.$idemergencia_temp.')"/>
-    </td>
-  </tr>
-  <tr>
-    <td>Liberado</td>
-    <td><div id="muestra_liberado">'.$atencion_datos['horalib'].'</div></td>
-    <td>
-       <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar hora liberado\'
-          onclick="xajax_control_liberado('.$idemergencia_temp.')"/>
-    </td>
-  </tr>
-    <tr>
-   <td colspan=3 align="right"><div id="muestra_boton">'.$BOTON.'</div></td>
-  </tr>
-  <tr></tr><tr></tr><tr></tr><tr></tr></table>
 
-  <table border="0">
+<table>
+ <tr>
+    <td valign="top">
+      <form name="formulario">
+        <table>
+         <input type="hidden" name="reloj" size="8">
+         <tr>
+            <th>Moviles</th>
+         </tr>   
+         <tr>
+            <td>
+              <div id="muestra_moviles"></div>
+            </td>
+            <td align="center" style="CURSOR: pointer">
+              <input type="hidden" name="imagen" id="imagen" 
+              value="imagen" onclick="check_movil('.$idemergencia_temp.',formulario.moviles_disp.value,'.$atencion_datos['movil'].');" />
+            </td>
+         </tr>   
+        </table>
+      </form>
+     
+      <table>
+        <tr>
+          <td>Llamado</td>
+          <td>'.$atencion_datos['horallam'].'&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Pase a Despacho</td>
+          <td><div id="muestra_pasedespacho">'.$atencion_datos['horadesp'].'</div></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>Demora</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Salida Base</td>
+          <td><div id="muestra_salida_base">'.$atencion_datos['horasalbase'].'</div></td>
+          <td>
+           <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida base\'
+                onclick="xajax_control_salida_base('.$idemergencia_temp.')"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Lleg. Domicilio</td>
+          <td><div id="muestra_llegada_dom">'.$atencion_datos['horallegdom'].'</div></td>
+          <td>
+              <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar llegada domicilio\'
+                onclick="xajax_control_llegada_dom('.$idemergencia_temp.')"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Salida Domicilio</td>
+          <td><div id="muestra_salida_dom">'.$atencion_datos['horasaldom'].'</div></td>
+          <td>
+             <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida domicilio\'
+                onclick="xajax_control_salida_dom('.$idemergencia_temp.')"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Lleg Hospital</td>
+          <td><div id="muestra_llegada_hosp">'.$atencion_datos['horalleghosp'].'</div></td>
+          <td>
+                 <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar llegada hospital\'
+                onclick="xajax_control_llegada_hosp('.$idemergencia_temp.')"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Salida Hospital</td>
+          <td><div id="muestra_salida_hosp">'.$atencion_datos['horasalhosp'].'</div></td>
+          <td>
+                 <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida hospital\'
+                onclick="xajax_control_salida_hosp('.$idemergencia_temp.')"/>
+          </td>
+        </tr>
+        <tr>
+          <td>Liberado</td>
+          <td><div id="muestra_liberado">'.$atencion_datos['horalib'].'</div></td>
+          <td>
+             <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar hora liberado\'
+                onclick="xajax_control_liberado('.$idemergencia_temp.')"/>
+          </td>
+        </tr>
+        <tr>
+         <td colspan=3 align="right"><div id="muestra_boton">'.$BOTON.'</div></td>
+        </tr>
+  </table>
+  <table>
   <tr>
     <th colspan="3">Reclamos</th>
   </tr>

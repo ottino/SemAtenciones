@@ -15,8 +15,6 @@ function isInteger (s)
 
       return true;
    }
-
-// pregunta antes de eliminar 
 function check_emergencia(
 fecha,telefono,plan,horallam,socio,nombre,tiposocio,edad,sexo,identificacion,documento,
 calle,numero,piso,depto,casa,monoblok,barrio,entre1,entre2,localidad,
@@ -187,8 +185,6 @@ nosocio5checked  , nosocio5 , noedad5 , nosexo5, noiden5 , nodocum5
 	 }
 
   };
-
-// pregunta antes de eliminar 
 function check_movil(idatenciontemp,idmovil,control)
   {
   
@@ -210,8 +206,6 @@ function check_movil(idatenciontemp,idmovil,control)
 	 // } else alert ("Ya fue asignado un movil !!!!!");	   
 	 
   };
- 
-// verifica antes de hacer la anular una atencion
 function check_anula(idatencion,cod_anula,obs)
   {
   
@@ -224,13 +218,11 @@ function check_anula(idatencion,cod_anula,obs)
 		  window.close();
 	    }	 
   };
-  
 function check_close(ate,obs)
   {
     xajax_func_ingresa_llamado(ate,obs);
     window.close();
   };  
-  
 function check_ejec ( idemergencia_temp , i_busca_x_rubro, i_busca_x_articulo,
 					  movilhidden, cantidad_rest)
 {
@@ -241,7 +233,6 @@ function check_ejec ( idemergencia_temp , i_busca_x_rubro, i_busca_x_articulo,
 					  
 
 }						  
-
 function check_cierra_atencion ( idemergencia_temp, s_lista_destino,s_lista_diagnostico,
                                  s_lista_color,cosegurosi,cosegurono,valor_coseguro , obs_final ,
 								    cantidad_vincul , 
@@ -335,24 +326,20 @@ alert (dni_socio);
    }
 
 }
-
- function calendario(){
+function calendario(){
     Calendar.setup({ 
      inputField     :    "cla_fecha",     // id del campo de texto 
       ifFormat     :     "%Y/%m/%d",     // formato de la fecha que se escriba en el campo de texto 
       button     :    "lanzador"     // el id del bot�n que lanzar� el calendario 
  }); 
 };
-
- function calendario1(){
+function calendario1(){
     Calendar.setup({ 
      inputField     :    "cla_fecha1",     // id del campo de texto 
       ifFormat     :     "%Y/%m/%d",     // formato de la fecha que se escriba en el campo de texto 
       button     :    "lanzador1"     // el id del bot�n que lanzar� el calendario 
  }); 
 };
-//********************************************************************
-
 function check_emergencia_edit(
 fecha,telefono,plan,horallam,socio,nombre,tiposocio,edad,sexo,identificacion,documento,
 calle,numero,piso,depto,casa,monoblok,barrio,entre1,entre2,localidad,
