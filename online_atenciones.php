@@ -88,28 +88,28 @@ switch ($ordenar) {
 
 $ver = $idemergencia_temp_11;
 $html_salida = '
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>  
+    <script type="text/javascript">
+        function popup(mylink)
+        {
+        if (! window.focus)return true;
+        var href;
+        if (typeof(mylink) == "string")
+           href=mylink;
+        else
+           href=mylink.href;
+        window.open(href, "asdasd", "width=400,height=200,scrollbars=yes");
+        return false;
+        }
+    </script>
 
-<SCRIPT TYPE="text/javascript">
-function popup(mylink)
-{
-if (! window.focus)return true;
-var href;
-if (typeof(mylink) == "string")
-   href=mylink;
-else
-   href=mylink.href;
-window.open(href, "asdasd", "width=400,height=200,scrollbars=yes");
-return false;
-}
-</SCRIPT>
+    <link rel="stylesheet/less" type="text/css" href="css/estilos.less" />       
+    <script type="text/javascript" src="js/less.js"></script>
 
-<title></title>
 </head>
 <body>
-<table class="online">
+<table class="llamados">
   <tr>
    <th>*</th>
    <th>Id</th>
@@ -123,7 +123,6 @@ return false;
    <th>E</th>
    <th>LL</th>
   </tr>
-
 ';
 
 while ($fila=mysql_fetch_array($consulta)){
@@ -186,13 +185,13 @@ while ($fila=mysql_fetch_array($consulta)){
   }else $zona_desc="&nbsp;";
 
     $desc_plan =  mysql_fetch_array(mysql_query ("SELECT *
-                               FROM planes
-                               WHERE idplan ='".$fila['plan']."'")); //idplan - descplan
+                               FROM convenios
+                               WHERE id ='".$fila['plan']."'")); //idplan - descplan
 
  if ($fila['id'] == $idemergencia_temp_11)
   {
-   $color_fila_ate = 'style="background-color:'.$body_color.'"';
-  } else $color_fila_ate = 'style="background-color:'.$td_color.'"';
+   $color_fila_ate = '';
+  } else $color_fila_ate = '';
 
  if ($fila['piso'] == '')
   {
@@ -207,56 +206,70 @@ while ($fila=mysql_fetch_array($consulta)){
 
 
  $html_salida.='
-                 <tr >
+                 <tr>
+                 
                   <td>
-                  <form method="POST" action="atenciones.php" class="tabla">
-                   <input type="hidden" name="id_atencion_temp" id="id_atencion_temp" value="'.$fila['id'].'">
-                   <input type="hidden" name="id_ordenar" id="id_ordenar" value="'.$ordenar.'">
-                    <label onclick="this.form.submit();" style="CURSOR: pointer" >
-                     <img alt=\'Asignar\' src="imagenes/'.$fila['color'].'" width="15" height="15"/>
-                    </label>
-                  </form></td>
+                    <form method="post" action="atenciones.php">
+                     <input type="hidden" name="id_atencion_temp" id="id_atencion_temp" value="'.$fila['id'].'">
+                     <input type="hidden" name="id_ordenar" id="id_ordenar" value="'.$ordenar.'">
+                     <label onclick="this.form.submit();" style="cursor: pointer" >
+                       <img alt=\'Asignar\' src="imagenes/'.$fila['color'].'" width="15" height="15"/>
+                     </label>
+                    </form>
+                  </td>
+                  
                   <td>
-                  <form method="POST" action="atenciones.php" class="tabla">
-                   <input type="hidden" name="id_atencion_temp" id="id_atencion_temp" value="'.$fila['id'].'">
-                   <input type="hidden" name="id_ordenar" id="id_ordenar" value="'.$ordenar.'">
-                  <label onclick="this.form.submit();" style="CURSOR: pointer">
-                   '.ltrim($fila['id'] , '0').'
-                  </label>
-                  </form></td>
+                    <form method="POST" action="atenciones.php">
+                       <input type="hidden" name="id_atencion_temp" id="id_atencion_temp" value="'.$fila['id'].'">
+                       <input type="hidden" name="id_ordenar" id="id_ordenar" value="'.$ordenar.'">
+                       <label onclick="this.form.submit();" style="cursor: pointer">
+                        '.ltrim($fila['id'] , '0').'
+                       </label>
+                    </form>
+                  </td>
+                  
                   <td>
                    '.htmlentities($fila['calle']).''.htmlentities($fila['numero']).$mpiso.htmlentities($fila['piso']).$mdepto.htmlentities($fila['depto']).' - '.htmlentities($fila['localidad']).'<br>'.$info_traslado.'
                    '.$info_evento.'
                   </td>
+                  
                   <td '.$color_fila_zona.' >
                    '.htmlentities($zona_desc).'
                   </td>
+                  
                   <td >
-                   '.htmlentities($desc_plan['descabrev']).'
+                   '.htmlentities($desc_plan['descripcion']).'
                   </td>
-                  <td  valign="" align="center" style="background-color:'.$ascii['codigo_ascii'].'" style="font-size:11px">
+                  
+                  <td  valign="" align="center" style="background-color:'.$ascii['codigo_ascii'].'">
                    '.$fila['abierta'].'&nbsp
                   </td>
-                  <td  align="center"  >
+                  
+                  <td  align="center">
                    '.htmlentities($fila['edad']).'
                   </td>
-                  <td  align="center"  >
+                  
+                  <td>
                    '.$celda_movil.'
                   </td>
-                  <td >
-                   <label onClick="'.$onclick_anula.'" style="CURSOR: pointer" >
+                  
+                  <td>
+                   <label onClick="'.$onclick_anula.'" style="cursor: pointer">
                    <img src="imagenes/b_drop.png" width="15" height="15"/>
                   </td>
-                  <td  >
+                  
+                  <td>
                    <label onClick="window.open(\'mod_alta_edit.php?id_atencion=\'+\''.ltrim($fila['id'] , '0').'\',
                                                 \'EDITAR\', \'width=2000,height=1000,scrollbars=yes\');" style="CURSOR: pointer" >
                    <img src="imagenes/b_edit.png" width="14" height="14"/>
                   </td>
-                  <td >
+                  
+                  <td>
                    <label onClick="window.open(\'mod_alta_llam.php?id_atencion=\'+\''.ltrim($fila['id'] , '0').'\',
                                                 \'AGREGAR LLAMADO\', \'width=2000,height=1000,scrollbars=yes\');" style="CURSOR: pointer" >
                    <img src="imagenes/241.ico" width="14" height="14"/>
-                  </td>				  
+                  </td>	
+                  
                 </tr>
                ';
 }

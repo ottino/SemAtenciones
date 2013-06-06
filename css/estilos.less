@@ -1,6 +1,9 @@
 @color_body     : #fff;
 @fuente_body    : 'Ubuntu',Tahoma,sans-serif;
-@tam_fuente     : small;
+@tam_fuente     : medium;
+@tam_fuente_llamados : small;
+@tam_fuente_detalle  : small;
+
 
 body{
 	background  : @color_body;
@@ -22,7 +25,7 @@ table tr td {
 	padding         : 1px;
 	text-align      : left;
 	vertical-align  : top;
-	border          : 1px solid #ddd;
+	border          : 1px solid #ddd;       
 }
 
 input{
@@ -40,4 +43,64 @@ input{
     td    {
             width       : 6%;
           }   
+}
+
+.llamados {
+
+    width       : 97%;
+    font-size   : @tam_fuente_llamados;
+}
+
+.barra {
+        overflow    :   auto;
+        width       :   100%;
+        height      :   500px;
+}
+
+textarea {
+	clear: both;
+	font-family: @fuente_body;
+	padding: 1%;
+        border: 1px solid #ddd;
+}
+
+.view {
+
+	width       :76%;
+	border-left :1px solid #666;
+	padding     :1px 2%;
+	border      :none;
+        font-size   :@tam_fuente_detalle 
+}
+
+.content{
+	background: #fff;
+	clear: both;
+	color: #333;
+	padding: 10px 20px 40px 20px;
+	overflow: auto;
+}
+
+/** Scaffold View **/
+dl {
+	line-height: 2em;
+	margin: 0em 0em;
+	width: 40%;
+        float: left;
+}
+dl dd:nth-child(4n+2),
+dl dt:nth-child(4n+1) {
+	background: #f4f4f4;
+}
+
+dt {
+	font-weight: bold;
+	padding-left: 4px;
+	vertical-align: top;
+	width: 15em;
+}
+dd {
+	margin-left: 15em;
+	margin-top: -2em;
+	vertical-align: top;
 }

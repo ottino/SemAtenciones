@@ -717,4 +717,17 @@ else
 function pr($array){
     echo sprintf("<pre>%s</pre>", print_r($array, true));
 }
+
+/**
+ * Funcionp para verificar si un dato es null
+ * e imprimir un valor
+ *
+ * @param val valor a verificar 
+ * @param repace valor para mostrar
+ */
+function nvl($val, $replace)
+{
+    if( is_null($val) || $val === '' )  return $replace;
+    else                                return $val;
+}
 ?>

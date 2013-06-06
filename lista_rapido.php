@@ -28,28 +28,28 @@ switch ($ordenar) {
 
 $ver = $idemergencia_temp_11;
 $html_salida = '
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-
-<SCRIPT TYPE="text/javascript">
-function popup(mylink)
-{
-if (! window.focus)return true;
-var href;
-if (typeof(mylink) == "string")
-   href=mylink;
-else
-   href=mylink.href;
-window.open(href, "asdasd", "width=400,height=200,scrollbars=yes");
-return false;
-}
-</SCRIPT>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title></title>
+       <link rel="stylesheet/less" type="text/css" href="css/estilos.less" />       
+       <script type="text/javascript" src="js/less.js"></script>
+       
+        <script type="text/javascript">
+        function popup(mylink)
+        {
+        if (! window.focus)return true;
+        var href;
+        if (typeof(mylink) == "string")
+           href=mylink;
+        else
+           href=mylink.href;
+        window.open(href, "asdasd", "width=400,height=200,scrollbars=yes");
+        return false;
+        }
+        </script>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body>
-<table class="online">
+<table class="llamados">
   <tr>
    <th>*</th>
    <th>Id</th>
@@ -147,7 +147,7 @@ while ($fila=mysql_fetch_array($consulta)){
 
 
  $html_salida.='
-                 <tr >
+                 <tr>
                   <td>
                   <form method="POST" action="atenciones.php" class="tabla">
                    <input type="hidden" name="id_atencion_temp" id="id_atencion_temp" value="'.$fila['id'].'">
@@ -185,12 +185,12 @@ while ($fila=mysql_fetch_array($consulta)){
                   </td>
                   <td >
                    <label onClick="'.$onclick_anula.'" style="CURSOR: pointer" >
-                   <img src="imagenes/b_drop.png" width="15" height="15"/>
+                   <img src="imagenes/b_drop.png" width="15" height="15" />
                   </td>
                   <td  >
                    <label onClick="window.open(\'mod_alta_edit.php?id_atencion=\'+\''.ltrim($fila['id'] , '0').'\',
                                                 \'EDITAR\', \'width=2000,height=1000,scrollbars=yes\');" style="CURSOR: pointer" >
-                   <img src="imagenes/b_edit.png" width="14" height="14"/>
+                   <img src="imagenes/b_edit.png"  width="14" height="14" />
                   </td>
                   <td >
                    <label onClick="window.open(\'mod_alta_llam.php?id_atencion=\'+\''.ltrim($fila['id'] , '0').'\',

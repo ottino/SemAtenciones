@@ -1029,7 +1029,7 @@ $html_salida = '
 </table>
  </td>
  <td>&nbsp;&nbsp;</td>
- <td width="990"  height="" valign="top">
+ <td valign="top" class="llamados">
   <div id="llamados" class="barra">'.muestra_listado_temp ($idemergencia_temp,$ordenar).'
   </div>
  </td> 
@@ -1053,61 +1053,90 @@ $html_salida = '
   
 </table>
 
-       <div id="update"></div>
-       <div>
-       <textarea class="input-xlarge" type="text" name="notas" rows="20"  align="left" style="width:100%">
+<div id="update"></div>
 
-       *********************************       Informaci�n personal del cliente.        *********************************
+<div class="barra"> 
+    <div class="view content"> 
+        <h2>Detalles de la emergencia</h2>
+             <dl>
+              <dt>Socio</dt>
+              <dd>'.nvl($atencion_datos['nombre'],'-').'</dd>
+              <dt>Edad</dt>
+              <dd>'.nvl($atencion_datos['edad'],'-').'</dd>
+              <dt>Sexo</dt>
+              <dd>'.nvl($atencion_datos['sexo'],'-').'</dd>
+              <dt>Calle</dt>
+              <dd>'.nvl($atencion_datos['calle'],'-').'</dd>
+              <dt>Numero</dt>
+              <dd>'.nvl($atencion_datos['numero'],'-').'</dd>
+              <dt>Piso</dt>
+              <dd>'.nvl($atencion_datos['piso'],'-').'</dd>
+              <dt>Departamento</dt>
+              <dd>'.nvl($atencion_datos['depto'],'-').'</dd>
+              <dt>Casa</dt>
+              <dd>'.nvl($atencion_datos['casa'],'-').'</dd>
+              <dt>Monoblok</dt>
+              <dd>'.nvl($atencion_datos['monoblok'],'-').'</dd>
+             </dl>    
+             <dl>
+              <dt>Barrio</dt>
+              <dd>'.nvl($atencion_datos['barrio'],'-').'</dd>
+              <dt>Calles entre</dt>
+              <dd>'.nvl($atencion_datos['entre1'],'-').' y '.nvl($atencion_datos['entre2'],'-').'</dd>
+              <dt>Localidad</dt>
+              <dd>'.nvl($atencion_datos['localidad'],'-').'</dd>
+              <dt>Referencia</dt>
+              <dd>'.nvl($atencion_datos['referencia'],'-').'</dd>
+              <dt>Observaciones</dt>
+              <dd>'.$atencion_datos['observa1'].' - '.$atencion_datos['observa2'].'</dd>    
+              <dt>Telefono</dt>
+              <dd>'.nvl($atencion_datos['telefono'],'-').'</dd>                           
+              <dt>Fecha nacimiento</dt>
+              <dd>'.nvl($padron_datos_para_obs['fnacimiento'],'-').'</dd>              
+              <dt>Documento</dt>
+              <dd>'.nvl($padron_datos_para_obs['documento'],'-').'</dd>              
+              <dt>Tipo de Socio</dt>
+              <dd>'.nvl($padron_datos_para_obs['tiposocio'],'-').'</dd>              
+             </dl>
+    </div>
 
-       * Apellido y nombre    : '.elimina_caracteres(htmlentities($atencion_datos['nombre'])).'
-       * Edad                 : '.$atencion_datos['edad'].'
-       * Sexo                 : '.$atencion_datos['sexo'].'
-       * Calle                : '.elimina_caracteres(htmlentities($atencion_datos['calle'])).'
-       * Numero               : '.$atencion_datos['numero'].'
-       * Piso                 : '.$atencion_datos['piso'].'
-       * Departamento         : '.$atencion_datos['depto'].'
-       * Casa                 : '.$atencion_datos['casa'].'
-       * Monoblok             : '.$atencion_datos['monoblok'].'
-       * Barrio               : '.elimina_caracteres(htmlentities($atencion_datos['barrio'])).'
-       * Entre                : '.elimina_caracteres(htmlentities($atencion_datos['entre1'])).' y '.elimina_caracteres(htmlentities($atencion_datos['entre2'])).'
-       * Localidad            : '.elimina_caracteres(htmlentities($atencion_datos['localidad'])).'
-       * Referencia           : '.elimina_caracteres(htmlentities($atencion_datos['referencia'])).'
-       * Observaciones        : '.elimina_caracteres(htmlentities($atencion_datos['observa1'])).'   -   '.elimina_caracteres(htmlentities($atencion_datos['observa2'])).'
-       * Telefono             : '.$atencion_datos['telefono'].'
-       * Plan                 : '.$padron_datos_para_obs['plan'].'
-       * Fecha nacimiento     : '.$padron_datos_para_obs['fnacimiento'].'
-       * Documento            : '.$padron_datos_para_obs['documento'].'
-       * Tipo de Socio        : '.$padron_datos_para_obs['tiposocio'].'
+    <div class="view content"> 
+        <h2>Información sobre horarios</h2>
+             <dl>
+              <dt>Hora llamado</dt>
+              <dd>'.nvl($atencion_datos['horallam'],'-').'</dd>
+              <dt>Despacho</dt>
+              <dd>'.nvl($atencion_datos['horadesp'],'-').'</dd>
+              <dt>Salida base</dt>
+              <dd>'.nvl($atencion_datos['horasalbase'],'-').'</dd>
+              <dt>Llegada domicilio</dt>
+              <dd>'.nvl($atencion_datos['horallegdom'],'-').'</dd>
+             </dl>    
+             <dl>       
+              <dt>Salida domicilio</dt>
+              <dd>'.nvl($atencion_datos['horasaldom'],'-').'</dd>
+              <dt>Llegada hospital</dt>
+              <dd>'.nvl($atencion_datos['horalleghosp'],'-').'</dd>
+              <dt>Salida hospital</dt>
+              <dd>'.nvl($atencion_datos['horasalhosp'],'-').'</dd>
+             </dl>
+    </div>
 
-       ******************************************************************************************************************
-       *********************************          Informaci�n sobre horarios.           *********************************
+    <div class="view content"> 
+        <h2>Reclamos</h2>
+             <dl>
+              <dt>Primer  reclamo</dt>
+              <dd>'.nvl($atencion_datos['reclamo_1'],'-').'</dd>
+              <dt>Segundo reclamo</dt>
+              <dd>'.nvl($atencion_datos['reclamo_2'],'-').'</dd>
+              <dt>Tercer  reclamo</dt>
+              <dd>'.nvl($atencion_datos['reclamo_3'],'-').'</dd>
+             </dl>
+    </div>
+</div>
 
-       * LLAMADOS
-       * Hora llamado    : '.$atencion_datos['horallam'].'
-       * Despacho        : '.$atencion_datos['horadesp'].'
-       * Salida base     : '.$atencion_datos['horasalbase'].'
-       * Llegada dom     : '.$atencion_datos['horallegdom'].'
-       * Salida  dom     : '.$atencion_datos['horasaldom'].'
-       * Llegada hosp    : '.$atencion_datos['horalleghosp'].'
-       * Salida  hosp    : '.$atencion_datos['horasalhosp'].'
-
-
-       * RECLAMOS
-       * Primer  reclamo : '.$atencion_datos['reclamo_1'].'
-       * Segundo reclamo : '.$atencion_datos['reclamo_2'].'
-       * Tercer  reclamo : '.$atencion_datos['reclamo_3'].'
-
-
-       ******************************************************************************************************************
-       *********************************             Informaci�n sobre Plan.            *********************************
-       * Codigo Plan          : '.$atencion_datos['plan'].'
-       * Descripcion del plan : '.$plan_desc_1.'
-       * Datos                : '.$plan_desc.'
-       </textarea>
-       </div>
 </body>
 </html>
 ';
 echo $html_salida;
-// <div id="muestra_boton">'.$BOTON.'</div>
 ?>
