@@ -1,8 +1,9 @@
-@color_body     : #fff;
-@fuente_body    : 'Ubuntu',Tahoma,sans-serif;
-@tam_fuente     : medium;
-@tam_fuente_llamados : small;
-@tam_fuente_detalle  : small;
+@color_body             : #fff;
+@fuente_body            : 'Ubuntu',Tahoma,sans-serif;
+@tam_fuente             : medium;
+@tam_fuente_llamados    : small;
+@tam_fuente_detalle     : small;
+@marcas_tiempo          : '../imagenes/watch_time.png';
 
 
 body{
@@ -79,6 +80,44 @@ textarea {
 	color: #333;
 	padding: 10px 20px 40px 20px;
 	overflow: auto;
+}
+
+.marcas_tiempo_tb {
+        width       : 20%;
+              }
+
+.marcas_tiempo_tb2 {
+        width       : 100%;
+              }
+
+.marcas_tiempo_td1{
+        width : 50%;
+}
+
+.marcas_tiempo_td2{
+        width : 40%;
+}
+
+.marcas_tiempo_td3{
+        width : 10%;
+}
+
+.marcas_tiempo {
+        background          : url( @marcas_tiempo );
+        background-size     : 24px;
+        background-repeat   : no-repeat; 
+        text-align          : center; 
+        vertical-align      : top;         
+        cursor              : pointer;
+}
+
+.marcas_reclamos {
+        background          : url( @marcas_tiempo );
+        background-size     : 20px;
+        background-repeat   : no-repeat; 
+        text-align          : center;       
+        cursor              : pointer;
+        background-position : center; 
 }
 
 /** Scaffold View **/

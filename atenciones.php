@@ -130,10 +130,10 @@ function refresca_equipo($idmovildisp) {
    $td_medico='
    <table>
    <tr>
-    <td">
-     <img src="imagenes/68.ico" width="16" height="15" />Medico:'.elimina_caracteres(htmlentities($medico['apeynomb'])).'
-     <img src="imagenes/68.ico" width="16" height="15" />Chofer:'.elimina_caracteres(htmlentities($chofer['apeynomb'])).'
-     <img src="imagenes/68.ico" width="16" height="15" />Enfermero:'.elimina_caracteres(htmlentities($enfermero['apeynomb'])).'
+    <td>
+     <img src="imagenes/medicos.png" width="16" height="15" />Medico:'.elimina_caracteres(htmlentities($medico['apeynomb'])).'
+     <img src="imagenes/medicos.png" width="16" height="15" />Chofer:'.elimina_caracteres(htmlentities($chofer['apeynomb'])).'
+     <img src="imagenes/medicos.png" width="16" height="15" />Enfermero:'.elimina_caracteres(htmlentities($enfermero['apeynomb'])).'
     </td>
    </tr>
    </table>
@@ -147,9 +147,9 @@ function refresca_equipo($idmovildisp) {
                <table>
                <tr>
                 <td>
-                 <img src="imagenes/68.ico" width="16" height="15" />&nbsp;&nbsp;Medico:&nbsp;ASIGNAR&nbsp;&nbsp;&nbsp;
-                 <img src="imagenes/68.ico" width="16" height="15" />&nbsp;&nbsp;Chofer:&nbsp;ASIGNAR&nbsp;&nbsp;&nbsp;
-                 <img src="imagenes/68.ico" width="16" height="15" />&nbsp;&nbsp;Enfermero:&nbsp;ASIGNAR&nbsp;&nbsp;&nbsp;
+                 <img src="imagenes/medicos.png" width="16" height="15" />&nbsp;&nbsp;Medico:&nbsp;Asignar&nbsp;&nbsp;&nbsp;
+                 <img src="imagenes/medicos.png" width="16" height="15" />&nbsp;&nbsp;Chofer:&nbsp;Asignar&nbsp;&nbsp;&nbsp;
+                 <img src="imagenes/medicos.png" width="16" height="15" />&nbsp;&nbsp;Enfermero:&nbsp;Asignar&nbsp;&nbsp;&nbsp;
                 </td>
                </tr>
                </table> ';
@@ -838,7 +838,7 @@ $html_salida = '
   
   <tr>
    <td colspan="10">
-    <img src="imagenes/241.ico" width="16" height="15" />&nbsp;En Línea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
+    <img src="imagenes/contact.png" width="16" height="15" />&nbsp;En Línea:&nbsp;'.($cantidad_total_est['cantidad']  - $cantidad_traslados_pendi['CANTIDAD'] - $cantidad_eventos_pendi['CANTIDAD']).'&nbsp;&nbsp;&nbsp;'.$foquitos_est.'
     Pendientes ('.($cantidad_traslados_pendi['CANTIDAD'] + $cantidad_eventos_pendi['CANTIDAD']).'): Traslados '.$cantidad_traslados_pendi['CANTIDAD'].'  Eventos '.$cantidad_eventos_pendi['CANTIDAD'].'
     Detalle  <img style="CURSOR:pointer" src="imagenes/Alert 01.ico" width="16" height="16" onClick="window.open(\'popup_traslados_pendi.php\',\'ANULACIONES\', \'width=1200,height=700,scrollbars=yes\');"/>
    </td>
@@ -893,7 +893,7 @@ $html_salida = '
 
 <table>
  <tr>
-    <td valign="top">
+    <td valign="top" class="marcas_tiempo_tb">
       <form name="formulario">
         <table>
          <input type="hidden" name="reloj" size="8">
@@ -912,11 +912,11 @@ $html_salida = '
         </table>
       </form>
      
-      <table>
+      <table class="marcas_tiempo_tb2">
         <tr>
-          <td>Llamado</td>
-          <td>'.$atencion_datos['horallam'].'&nbsp;</td>
-          <td>&nbsp;</td>
+          <td class="marcas_tiempo_td1">Llamado</td>
+          <td class="marcas_tiempo_td2">'.$atencion_datos['horallam'].'&nbsp;</td>
+          <td class="marcas_tiempo_td3">&nbsp;</td>
         </tr>
         <tr>
           <td>Pase a Despacho</td>
@@ -931,49 +931,37 @@ $html_salida = '
         <tr>
           <td>Salida Base</td>
           <td><div id="muestra_salida_base">'.$atencion_datos['horasalbase'].'</div></td>
-          <td>
-           <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida base\'
-                onclick="xajax_control_salida_base('.$idemergencia_temp.')"/>
+          <td class = "marcas_tiempo" onclick="xajax_control_salida_base('.$idemergencia_temp.')">
           </td>
         </tr>
         <tr>
           <td>Lleg. Domicilio</td>
           <td><div id="muestra_llegada_dom">'.$atencion_datos['horallegdom'].'</div></td>
-          <td>
-              <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar llegada domicilio\'
-                onclick="xajax_control_llegada_dom('.$idemergencia_temp.')"/>
+          <td class = "marcas_tiempo" onclick="xajax_control_llegada_dom('.$idemergencia_temp.')"/>
           </td>
         </tr>
         <tr>
           <td>Salida Domicilio</td>
           <td><div id="muestra_salida_dom">'.$atencion_datos['horasaldom'].'</div></td>
-          <td>
-             <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida domicilio\'
-                onclick="xajax_control_salida_dom('.$idemergencia_temp.')"/>
+          <td class = "marcas_tiempo" onclick="xajax_control_salida_dom('.$idemergencia_temp.')">
           </td>
         </tr>
         <tr>
           <td>Lleg Hospital</td>
           <td><div id="muestra_llegada_hosp">'.$atencion_datos['horalleghosp'].'</div></td>
-          <td>
-                 <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar llegada hospital\'
-                onclick="xajax_control_llegada_hosp('.$idemergencia_temp.')"/>
+          <td class = "marcas_tiempo" onclick="xajax_control_llegada_hosp('.$idemergencia_temp.')">
           </td>
         </tr>
         <tr>
           <td>Salida Hospital</td>
           <td><div id="muestra_salida_hosp">'.$atencion_datos['horasalhosp'].'</div></td>
-          <td>
-                 <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar salida hospital\'
-                onclick="xajax_control_salida_hosp('.$idemergencia_temp.')"/>
+          <td class = "marcas_tiempo" onclick="xajax_control_salida_hosp('.$idemergencia_temp.')">
           </td>
         </tr>
         <tr>
           <td>Liberado</td>
           <td><div id="muestra_liberado">'.$atencion_datos['horalib'].'</div></td>
-          <td>
-             <img src="imagenes/reloj.png"  style="CURSOR: pointer" alt=\'Asignar hora liberado\'
-                onclick="xajax_control_liberado('.$idemergencia_temp.')"/>
+          <td class = "marcas_tiempo" onclick="xajax_control_liberado('.$idemergencia_temp.')">
           </td>
         </tr>
         <tr>
@@ -985,45 +973,34 @@ $html_salida = '
     <th colspan="3">Reclamos</th>
   </tr>
   <tr>
-    <td>
-     <img src="imagenes/reloj.png" alt="Reloj" title="Asignar hora de primer reclamo"  style="CURSOR: pointer"
-     onclick="xajax_control_reclamo_1('.$idemergencia_temp.')";
-     />
-     </td>
-     <td>
-     <img src="imagenes/reloj.png"  alt="Reloj" title="Asignar hora de segundo reclamo" style="CURSOR: pointer"
-     onclick="xajax_control_reclamo_2('.$idemergencia_temp.')";
-     />
-     </td>
-     <td>
-     <img src="imagenes/reloj.png"  alt="Reloj" title="Asignar hora de tercer reclamo"  style="CURSOR: pointer"
-     onclick="xajax_control_reclamo_3('.$idemergencia_temp.')";
-     />
-    </td>
+     <td class="marcas_reclamos" onclick="xajax_control_reclamo_1('.$idemergencia_temp.')">&nbsp;</td>
+     <td class="marcas_reclamos" onclick="xajax_control_reclamo_2('.$idemergencia_temp.')">&nbsp;</td>
+     <td class="marcas_reclamos" onclick="xajax_control_reclamo_3('.$idemergencia_temp.')">&nbsp;</td>
   </tr>
   <tr>
        <td>
-         <div id="muestra_reclamo_1" width="80%">'.$atencion_datos['reclamo_1'].'</div>
+         <div id="muestra_reclamo_1">'.$atencion_datos['reclamo_1'].'</div>
        </td>
        <td>
-         <div id="muestra_reclamo_2" width="80%">'.$atencion_datos['reclamo_2'].'</div>
+         <div id="muestra_reclamo_2">'.$atencion_datos['reclamo_2'].'</div>
        </td>
        <td>
-         <div id="muestra_reclamo_3" width="80%">'.$atencion_datos['reclamo_3'].'</div>
+         <div id="muestra_reclamo_3">'.$atencion_datos['reclamo_3'].'</div>
        </td>
-      </tr>
-</table>
- <table  width="100%"  border="0">
+  </tr>
+ </table>
+ <table  width="100%">
   <tr>
-    <th colspan="3">Receptor</td></th>
-    <tr>
-        <td colspan="3">'.elimina_caracteres(htmlentities(substr($receptor['apeynomb'],0,14))).'</td>
-    </tr>
+    <th colspan="3">Receptor</th>
+  </tr>  
+  <tr>
+    <td colspan="3">'.elimina_caracteres(htmlentities($receptor['apeynomb'])).'</td>
+  </tr>
   <tr>
     <th colspan="3">Despachador</th>
   </tr>
   <tr>
-    <td colspan="3"><div id="muestra_despachador">'.elimina_caracteres(htmlentities(substr($opedesp_nombre,0,14))).'</div>
+    <td colspan="3"><div id="muestra_despachador">'.elimina_caracteres(htmlentities($opedesp_nombre)).'</div>
     </td>
   </tr>
 </table>
@@ -1039,15 +1016,13 @@ $html_salida = '
 <br>
 <table>
  <tr>
-  <td >
-       <div align="left" id="muestra_equipo" style=" "></div>
+  <td>
+       <div align="left" id="muestra_equipo"></div>
   </td>
-  </tr>
-
-  
-   <tr>
+  </tr>  
+  <tr>
     <td >
-        Motivos del llamado: '.$atencion_datos['motivo1'].'-'.$atencion_datos['motivo2'].'-'.elimina_caracteres(htmlentities($motivo_desc)).'
+       <img src="imagenes/ambulance.png" width="16" height="15" />&nbsp;Motivos del llamado: '.$atencion_datos['motivo1'].'-'.$atencion_datos['motivo2'].'-'.elimina_caracteres(htmlentities($motivo_desc)).'
     </td>
   </tr>
   
